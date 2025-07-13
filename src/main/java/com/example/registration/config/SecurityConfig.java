@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -19,16 +21,16 @@ public class SecurityConfig {
      * 
      * @param http Configuración de seguridad HTTP
      * @return SecurityFilterChain configurado
-     * @throws Exception Si ocurre un error durante la configuración
+     * @throws Exception Sí ocurre un error durante la configuración
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             // Deshabilitar CSRF para la consola H2 y endpoints de API
-            .csrf(csrf -> csrf.disable())
+            .csrf(AbstractHttpConfigurer::disable)
             .headers(headers -> headers
                 // Permitir frames para la consola H2
-                .frameOptions(frameOptions -> frameOptions.disable()))
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
             .authorizeHttpRequests(authorize -> authorize
                 // Permitir acceso a la consola H2
                 .requestMatchers("/h2-console/**").permitAll()
