@@ -1,26 +1,101 @@
 # Documentación de la Base de Datos
 
-## Descripción
-Este proyecto utiliza H2 como sistema de gestión de base de datos en memoria, ideal para desarrollo y pruebas.
+## Entorno de desarrollo y pruebas
+Este proyecto utiliza H2 como base de datos en memoria para desarrollo y pruebas. La configuración se encuentra en `src/main/resources/application.properties` y no requiere archivos `.env` ni variables de entorno para usuario o contraseña.
 
-## Configuración
-- **Base de datos:** H2 (en memoria)
-- **Persistencia:** No persistente por defecto. Los datos se pierden al reiniciar la aplicación.
-- **Configuración:** Toda la configuración relevante se encuentra en `src/main/resources/application.properties`.
+## Entorno productivo (recomendación)
+Para entornos productivos, se recomienda utilizar una base de datos robusta como PostgreSQL, MySQL, Oracle, etc. En estos casos:
+
+- **No utilice H2 en memoria para producción.**
+- Gestione usuario, contraseña y otros datos sensibles mediante servicios especializados y seguros de gestión de secretos, como AWS Secrets Manager, AWS Parameter Store, Azure Key Vault, Google Secret Manager, HashiCorp Vault, entre otros.
+- Configure su `application.properties` para leer los valores de estos servicios de forma segura y nunca almacene credenciales sensibles en archivos de texto plano ni en el repositorio.
 
 ## Acceso a la consola H2
-Una vez levantada la aplicación, puede acceder a la consola web de H2 en:
+Para desarrollo, acceda a la consola web de H2 en:
 
     http://localhost:8080/h2-console
 
 Las credenciales y la URL de conexión están documentadas en el archivo de propiedades.
 
-## Modelo de la base de datos
+## Zona horaria recomendada
+Para asegurar la correcta gestión de fechas y horas en Colombia, la aplicación y la base de datos deben operar en la zona horaria `America/Bogota`.
 
-El modelo inicial contempla las siguientes entidades principales:
-- **User**: Representa a los usuarios registrados.
-- **Phone**: Representa los teléfonos asociados a cada usuario.
-- **PasswordPattern**: Tabla para almacenar el patrón de validación de contraseñas configurable en tiempo de ejecución.
+En el archivo `application.properties` se debe incluir:
+
+```properties
+spring.jackson.time-zone=America/Bogota
+```
+
+Esto garantiza que todos los registros de auditoría y operaciones con fechas se almacenen y consulten en la zona horaria local de Colombia.
+
+## Estructura de la base de datos
+
+El esquema de la base de datos está definido en el archivo `src/main/resources/schema.sql` y consta de las siguientes tablas:
+
+### Tablas principales
+
+#### users
+Almacena información de los usuarios registrados en el sistema.
+- `id` (UUID): Identificador único del usuario
+- `full_name` (VARCHAR): Nombre completo del usuario
+- `user_email` (VARCHAR): Correo electrónico (único)
+- `user_password` (VARCHAR): Contraseña encriptada
+- `last_login` (TIMESTAMP): Fecha del último ingreso
+- `user_token` (VARCHAR): Token de acceso API
+- Campos de auditoría: `is_active`, `created_at`, `updated_at`
+
+#### phones
+Almacena los teléfonos asociados a cada usuario.
+- `id` (BIGINT): Identificador único autoincrementable
+- `phone_number` (VARCHAR): Número de teléfono
+- `citycode` (VARCHAR): Código de ciudad
+- `contrycode` (VARCHAR): Código de país
+- `user_id` (UUID): Llave foránea a la tabla users
+- Campos de auditoría: `is_active`, `created_at`, `updated_at`
+
+### Tablas adicionales (preparadas para futuras funcionalidades)
+
+#### configuration
+Almacena parámetros de configuración del sistema.
+- `id` (BIGINT): Identificador único autoincrementable
+- `config_key` (VARCHAR): Clave de configuración (única)
+- `config_value` (VARCHAR): Valor de configuración
+- `description` (VARCHAR): Descripción de la configuración
+- Campos de auditoría: `is_active`, `created_at`, `updated_at`
+
+#### role
+Almacena los roles de usuario (ejemplo: administrador).
+- `id` (BIGINT): Identificador único autoincrementable
+- `role_name` (VARCHAR): Nombre del rol (único)
+- `description` (VARCHAR): Descripción del rol
+- Campos de auditoría: `is_active`, `created_at`, `updated_at`
+
+#### permission
+Almacena los permisos que pueden asignarse a los roles.
+- `id` (BIGINT): Identificador único autoincrementable
+- `permission_name` (VARCHAR): Nombre del permiso (único)
+- `description` (VARCHAR): Descripción del permiso
+- Campos de auditoría: `is_active`, `created_at`, `updated_at`
+
+#### roles_permissions
+Relaciona roles con permisos (muchos a muchos).
+- `role_id` (BIGINT): Llave foránea a la tabla role
+- `permission_id` (BIGINT): Llave foránea a la tabla permission
+- Llave primaria compuesta: (role_id, permission_id)
+
+## Entidades JPA implementadas
+
+Actualmente, el sistema tiene implementadas las siguientes entidades JPA:
+
+### User
+Representa un usuario en el sistema y mapea a la tabla `users`.
+- Relación One-to-Many con Phone: Un usuario puede tener múltiples teléfonos.
+
+### Phone
+Representa un teléfono asociado a un usuario y mapea a la tabla `phones`.
+- Relación Many-to-One con User: Múltiples teléfonos pueden pertenecer a un usuario.
+
+Las demás tablas (configuration, role, permission, roles_permissions) están definidas en el esquema de la base de datos pero aún no tienen entidades JPA correspondientes, ya que serán implementadas en futuras versiones del sistema.
 
 ---
-> No es necesario levantar contenedores Docker ni configurar archivos `.env` para la base de datos H2.
+> H2 es solo para desarrollo y pruebas. Para producción, utilice una base de datos real y gestione las credenciales mediante servicios seguros de gestión de secretos.

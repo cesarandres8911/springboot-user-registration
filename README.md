@@ -133,9 +133,10 @@ La documentación y detalles de la base de datos, así como el modelo y scripts 
 
 - [`docs/database/README.md`](docs/database/README.md)
 
-Allí se explica cómo utilizar H2 como base de datos en memoria, la configuración en `application.properties` y el modelo de datos inicial (User, Phone, PasswordPattern).
+Allí se explica cómo utilizar H2 como base de datos en memoria, la configuración en `application.properties` y el modelo de datos completo, incluyendo las entidades implementadas (User, Phone) y las tablas adicionales preparadas para futuras funcionalidades (configuration, role, permission, roles_permissions).
 
 ---
 
 ### Cambios recientes
 - Se actualizó la documentación para reflejar el uso de H2 como base de datos en memoria, eliminando referencias a PostgreSQL, Docker y .env para la base de datos.
+- Se actualizó la documentación de la base de datos para incluir información detallada sobre el esquema de la base de datos y las entidades JPA implementadas.
