@@ -21,7 +21,8 @@ object Versions {
     const val SPRINGDOC = "2.8.9"
     const val LOMBOK = "1.18.38"
     const val H2 = "2.2.224"
-    const val JUNIT_PLATFORM_LAUNCHER = "1.10.2"
+    const val JUNIT_PLATFORM = "1.12.2"
+    const val JUNIT_JUPITER = "5.12.2"
 }
 
 
@@ -41,12 +42,15 @@ dependencies {
 
 	// --- Runtime dependencies ---
 	runtimeOnly("com.h2database:h2:${Versions.H2}")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher:${Versions.JUNIT_PLATFORM_LAUNCHER}")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher:${Versions.JUNIT_PLATFORM}")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT_JUPITER}")
 
 	// --- Test dependencies ---
 	testImplementation("org.projectlombok:lombok:${Versions.LOMBOK}")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.JUNIT_JUPITER}")
+	testImplementation("org.junit.jupiter:junit-jupiter:${Versions.JUNIT_JUPITER}")
 }
 
 tasks.withType<Test> {
