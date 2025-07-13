@@ -19,7 +19,7 @@ repositories {
 
 object Versions {
     const val SPRINGDOC = "2.8.9"
-    const val LOMBOK = "1.18.32"
+    const val LOMBOK = "1.18.38"
     const val H2 = "2.2.224"
     const val JUNIT_PLATFORM_LAUNCHER = "1.10.2"
 }
