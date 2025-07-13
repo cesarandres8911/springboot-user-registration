@@ -8,7 +8,9 @@ import lombok.*;
  */
 @Entity
 @Table(name = "phones")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,15 +25,16 @@ public class Phone {
     private String phoneNumber;
 
     /** Código de ciudad. */
-    @Column(nullable = false)
-    private String citycode;
+    @Column(name = "city_code", nullable = false)
+    private String cityCode;
 
     /** Código de país. */
-    @Column(nullable = false)
-    private String contrycode;
+    @Column(name = "country_code", nullable = false)
+    private String countryCode;
 
     /** Usuario al que pertenece el teléfono. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 }
