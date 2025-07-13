@@ -2,6 +2,12 @@
 -- Este script crea las tablas principales para el sistema de registro de usuarios
 -- Toda la documentación está en español, los nombres de tablas y columnas en inglés
 
+-- Crear esquema si no existe (en H2 el esquema por defecto es PUBLIC)
+CREATE SCHEMA IF NOT EXISTS PUBLIC;
+
+-- Establecer el esquema por defecto
+SET SCHEMA PUBLIC;
+
 -- Tabla: users
 -- Almacena información de los usuarios
 CREATE TABLE IF NOT EXISTS users (
@@ -23,8 +29,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS phones (
     id BIGINT AUTO_INCREMENT PRIMARY KEY, -- Identificador único
     phone_number VARCHAR(20) NOT NULL,          -- Número de teléfono
-    citycode VARCHAR(10) NOT NULL,        -- Código de ciudad
-    contrycode VARCHAR(10) NOT NULL,      -- Código de país
+    city_code VARCHAR(10) NOT NULL,        -- Código de ciudad
+    country_code VARCHAR(10) NOT NULL,      -- Código de país
     user_id UUID,                         -- Llave foránea a users
     FOREIGN KEY (user_id) REFERENCES users(id),
 

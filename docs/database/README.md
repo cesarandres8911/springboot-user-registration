@@ -17,6 +17,8 @@ Para desarrollo, acceda a la consola web de H2 en:
 
 Las credenciales y la URL de conexión están documentadas en el archivo de propiedades.
 
+Al conectarse a la consola H2, utilice la URL `jdbc:h2:mem:testdb` en lugar de la URL por defecto `jdbc:h2:~/test` que aparece en el formulario de conexión.
+
 ## Zona horaria recomendada
 Para asegurar la correcta gestión de fechas y horas en Colombia, la aplicación y la base de datos deben operar en la zona horaria `America/Bogota`.
 
@@ -27,6 +29,33 @@ spring.jackson.time-zone=America/Bogota
 ```
 
 Esto garantiza que todos los registros de auditoría y operaciones con fechas se almacenen y consulten en la zona horaria local de Colombia.
+
+## Inicialización de la base de datos
+
+La base de datos se inicializa automáticamente al arrancar la aplicación mediante dos archivos:
+
+1. **schema.sql**: Define la estructura de las tablas (DDL - Data Definition Language)
+   - Ubicación: `src/main/resources/schema.sql`
+   - Crea explícitamente el esquema PUBLIC (esquema por defecto en H2) con `CREATE SCHEMA IF NOT EXISTS PUBLIC;`
+   - Establece el esquema activo con `SET SCHEMA PUBLIC;`
+   - Contiene las sentencias CREATE TABLE para crear la estructura de la base de datos
+   - Se ejecuta primero durante la inicialización
+
+2. **data.sql**: Contiene los datos iniciales para poblar las tablas (DML - Data Manipulation Language)
+   - Ubicación: `src/main/resources/data.sql`
+   - Establece el esquema activo con `SET SCHEMA PUBLIC;` para asegurar que los datos se insertan en el esquema correcto
+   - Contiene las sentencias INSERT para cargar datos iniciales
+   - Se ejecuta después de schema.sql
+   - Actualmente inserta configuraciones para validación de contraseñas
+
+La configuración para la carga de estos archivos se encuentra en `application.properties`:
+```properties
+spring.sql.init.mode=always
+spring.sql.init.schema-locations=classpath:schema.sql
+spring.sql.init.data-locations=classpath:data.sql
+```
+
+> **Nota**: En H2, la base de datos se crea automáticamente según la URL de conexión especificada en `application.properties`. Para este proyecto, la base de datos se llama "testdb" según la URL: `jdbc:h2:mem:testdb`.
 
 ## Estructura de la base de datos
 
