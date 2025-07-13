@@ -23,6 +23,7 @@ object Versions {
     const val H2 = "2.2.224"
     const val JUNIT_PLATFORM = "1.12.2"
     const val JUNIT_JUPITER = "5.12.2"
+    const val JWT = "0.11.5"
 }
 
 
@@ -35,6 +36,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springdoc:springdoc-openapi-starter-common:${Versions.SPRINGDOC}")
+	implementation("io.jsonwebtoken:jjwt-api:${Versions.JWT}")
+	implementation("io.jsonwebtoken:jjwt-impl:${Versions.JWT}")
+	implementation("io.jsonwebtoken:jjwt-jackson:${Versions.JWT}")
 
 	// --- Annotation processors ---
 	annotationProcessor("org.projectlombok:lombok:${Versions.LOMBOK}")
