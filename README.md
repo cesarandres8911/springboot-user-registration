@@ -1,2 +1,141 @@
 # springboot-user-registration
-REST API for user registration with token and validation (Spring Boot + Java 24)
+
+## Descripción general
+
+Este proyecto es un sistema de registro de usuarios construido con Spring Boot. Proporciona APIs RESTful para el registro, autenticación y gestión de usuarios.
+
+## Funcionalidades
+- Registro de usuarios con validación
+- Autenticación de usuarios (login)
+- Almacenamiento seguro de contraseñas
+- Endpoints para gestión de usuarios
+- Manejo de excepciones
+
+## Tecnologías utilizadas
+- Java
+- Spring Boot
+- Spring Data JPA
+- H2 (base de datos en memoria)
+- Gradle
+- Lombok
+- SLF4J (Logger)
+- Springdoc OpenAPI (para documentación y anotaciones @Schema en los DTOs)
+
+## Primeros pasos
+
+### Prerrequisitos
+- Java 17 o superior
+- Gradle
+
+### Ejecución de la aplicación
+
+1. Clone el repositorio:
+   ```bash
+   git clone <repository-url>
+   cd springboot-user-registration
+   ```
+2. Compile y ejecute la aplicación:
+   ```bash
+   ./gradlew bootRun
+   ```
+3. La aplicación estará disponible en `http://localhost:8080` por defecto.
+
+### Endpoints principales
+
+- `POST /api/register` - Registrar un nuevo usuario
+- `POST /api/login` - Autenticar un usuario
+- `GET /api/users` - Listar todos los usuarios (requiere autenticación)
+
+### Configuración de la base de datos
+
+Este proyecto utiliza H2 como base de datos en memoria para desarrollo y pruebas. No es necesario levantar ningún contenedor externo ni configurar variables de entorno para la base de datos.
+
+La configuración de H2 se encuentra en el archivo `src/main/resources/application.properties`.
+
+Para acceder a la consola web de H2, una vez levantada la aplicación, acceda a:
+
+    http://localhost:8080/h2-console
+
+Las credenciales y URL de conexión están documentadas en el archivo de propiedades.
+
+> Nota: Los archivos `docker-compose.yml` y `.env` ya no son necesarios ni forman parte del proyecto, ya que la base de datos utilizada es H2 en memoria.
+
+### Pruebas
+
+Ejecute las pruebas con:
+```bash
+./gradlew test
+```
+
+## Estructura del proyecto
+
+- `controller/` - Controladores REST
+- `service/` - Lógica de negocio
+- `repository/` - Acceso a datos
+- `model/` - Entidades JPA
+- `dto/` - Objetos de transferencia de datos
+- `exception/` - Excepciones personalizadas y manejadores
+- `config/` - Clases de configuración
+
+## Logging
+
+Este proyecto utiliza SLF4J para el registro de mensajes informativos, advertencias y errores. Ejemplo de uso:
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class YourClass {
+    private static final Logger logger = LoggerFactory.getLogger(YourClass.class);
+
+    public void ejemploLogger() {
+        logger.info("Mensaje informativo");
+        logger.warn("Mensaje de advertencia");
+        logger.error("Mensaje de error");
+    }
+}
+```
+
+## Documentación de la API
+
+Se utiliza Springdoc OpenAPI para generar y documentar la API con OpenAPI 3 y Swagger UI. Los DTOs están anotados con @Schema para mejor documentación y validación.
+
+- Acceda a Swagger UI en: `http://localhost:8080/swagger-ui.html` (o `/swagger-ui/index.html` según la versión de Springdoc).
+- Los DTOs usan @Schema para documentación de campos y anotaciones de validación.
+
+## Ejercicio propuesto
+
+El ejercicio propuesto para este proyecto se encuentra en:
+
+- `docs/ejercicio_propuesto_integracion.md`
+
+## Licencia
+
+Este proyecto está licenciado bajo MIT License.
+
+## Modelo de arquitectura
+
+El siguiente diagrama representa la estructura y flujo de los principales componentes del proyecto:
+
+```
+[controller] --> [service] --> [repository] --> [model]
+                     |
+                   [util]
+                     |
+                [exception]
+```
+
+Esto ilustra el flujo típico de una petición y cómo se separan las responsabilidades en la base de código.
+
+## Base de datos
+
+La documentación y detalles de la base de datos, así como el modelo y scripts de creación, se encuentran en:
+
+- [`docs/database/README.md`](docs/database/README.md)
+
+Allí se explica cómo utilizar H2 como base de datos en memoria, la configuración en `application.properties` y el modelo de datos inicial (User, Phone, PasswordPattern).
+
+---
+
+### Cambios recientes
+- Se actualizó la documentación para reflejar el uso de H2 como base de datos en memoria, eliminando referencias a PostgreSQL, Docker y .env para la base de datos.
