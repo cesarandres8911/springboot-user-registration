@@ -135,8 +135,22 @@ La documentación y detalles de la base de datos, así como el modelo y scripts 
 
 Allí se explica cómo utilizar H2 como base de datos en memoria, la configuración en `application.properties` y el modelo de datos completo, incluyendo las entidades implementadas (User, Phone) y las tablas adicionales preparadas para futuras funcionalidades (configuration, role, permission, roles_permissions).
 
+## Utilidades
+
+El proyecto incluye varias utilidades para facilitar tareas comunes:
+
+### Validación de contraseñas
+
+Se ha implementado un conjunto de utilidades para la validación de contraseñas basadas en configuraciones almacenadas en la base de datos. Estas utilidades permiten generar expresiones regulares dinámicas según criterios configurables.
+
+La documentación detallada se encuentra en:
+
+- [`docs/utils/README.md`](docs/utils/README.md)
+
 ---
 
 ### Cambios recientes
+- Se implementaron utilidades para la validación de contraseñas basadas en configuraciones almacenadas en la base de datos.
+- Se agregó documentación detallada sobre las utilidades de validación de contraseñas.
 - Se actualizó la documentación para reflejar el uso de H2 como base de datos en memoria, eliminando referencias a PostgreSQL, Docker y .env para la base de datos.
 - Se actualizó la documentación de la base de datos para incluir información detallada sobre el esquema de la base de datos y las entidades JPA implementadas.

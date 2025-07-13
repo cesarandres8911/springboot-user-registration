@@ -31,7 +31,9 @@ CREATE TABLE IF NOT EXISTS phones (
     phone_number VARCHAR(20) NOT NULL,          -- Número de teléfono
     city_code VARCHAR(10) NOT NULL,        -- Código de ciudad
     country_code VARCHAR(10) NOT NULL,      -- Código de país
-    user_id UUID,                         -- Llave foránea a users
+    user_id UUID,                         -- Referencia al usuario.
+
+    -- Restricción de clave foránea
     FOREIGN KEY (user_id) REFERENCES users(id),
 
     -- Campos de auditoría
@@ -40,13 +42,28 @@ CREATE TABLE IF NOT EXISTS phones (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla: configuration_type
+-- Almacena los tipos de configuración del sistema
+CREATE TABLE IF NOT EXISTS configuration_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY, -- Identificador único
+    type_key VARCHAR(100) NOT NULL UNIQUE,     -- Clave del tipo de configuración
+    description VARCHAR(255),             -- Descripción del tipo de configuración
+
+    -- Campos de auditoría
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Tabla: configuration
--- Almacena parámetros de configuración del sistema
+-- Almacena valores de configuración asociados a tipos de configuración
 CREATE TABLE IF NOT EXISTS configuration (
     id BIGINT AUTO_INCREMENT PRIMARY KEY, -- Identificador único
-    config_key VARCHAR(100) NOT NULL UNIQUE,     -- Clave de configuración
-    config_value VARCHAR(255) NOT NULL,          -- Valor de configuración
-    description VARCHAR(255),             -- Descripción de la configuración
+    configuration_type_id BIGINT NOT NULL, -- Referencia al tipo de configuración
+    config_value VARCHAR(255) NOT NULL,    -- Valor de configuración
+
+    -- Restricción de clave foránea
+    FOREIGN KEY (configuration_type_id) REFERENCES configuration_type(id),
 
     -- Campos de auditoría
     is_active BOOLEAN DEFAULT TRUE,

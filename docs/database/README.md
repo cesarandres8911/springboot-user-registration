@@ -1,7 +1,7 @@
 # Documentación de la Base de Datos
 
 ## Entorno de desarrollo y pruebas
-Este proyecto utiliza H2 como base de datos en memoria para desarrollo y pruebas. La configuración se encuentra en `src/main/resources/application.properties` y no requiere archivos `.env` ni variables de entorno para usuario o contraseña.
+Este proyecto utiliza H2 como base de datos basada en archivos para desarrollo y pruebas. La configuración se encuentra en `src/main/resources/application.properties` y no requiere archivos `.env` ni variables de entorno para usuario o contraseña. Los datos se almacenan en el directorio `./data` del proyecto.
 
 ## Entorno productivo (recomendación)
 Para entornos productivos, se recomienda utilizar una base de datos robusta como PostgreSQL, MySQL, Oracle, etc. En estos casos:
@@ -17,7 +17,30 @@ Para desarrollo, acceda a la consola web de H2 en:
 
 Las credenciales y la URL de conexión están documentadas en el archivo de propiedades.
 
-Al conectarse a la consola H2, utilice la URL `jdbc:h2:mem:testdb` en lugar de la URL por defecto `jdbc:h2:~/test` que aparece en el formulario de conexión.
+Al conectarse a la consola H2, utilice la URL `jdbc:h2:file:./data/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=FALSE` en lugar de la URL por defecto `jdbc:h2:~/test` que aparece en el formulario de conexión.
+
+## Conexión desde IntelliJ IDEA
+Para conectarse a la base de datos desde IntelliJ IDEA:
+
+1. Abra la pestaña "Database" en el lado derecho de IntelliJ IDEA
+2. Haga clic en el botón "+" y seleccione "Data Source" > "H2"
+3. Configure la conexión con los siguientes parámetros:
+   - Name: testdb (o cualquier nombre descriptivo)
+   - URL: `jdbc:h2:file:./data/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=FALSE`
+   - User: sa
+   - Password: (dejar en blanco)
+4. Asegúrese de que la opción "URL only" esté seleccionada en la sección "Connection Type"
+5. Pruebe la conexión con el botón "Test Connection"
+6. Si la prueba de conexión falla, verifique que:
+   - La aplicación se haya ejecutado al menos una vez para que se cree el archivo de base de datos
+   - La ruta del archivo sea correcta (relativa al directorio del proyecto)
+   - Los parámetros de conexión sean exactamente como se muestran arriba
+7. Haga clic en "Apply" y luego en "OK"
+
+Ahora debería poder ver las tablas en la vista de base de datos de IntelliJ IDEA. Si no puede ver las tablas, intente:
+- Refrescar la conexión haciendo clic derecho en el nombre de la conexión y seleccionando "Refresh"
+- Verificar que la aplicación haya creado correctamente las tablas ejecutándola y accediendo a la consola H2
+- Asegurarse de que está utilizando exactamente la misma cadena de conexión que se usa en application.properties
 
 ## Zona horaria recomendada
 Para asegurar la correcta gestión de fechas y horas en Colombia, la aplicación y la base de datos deben operar en la zona horaria `America/Bogota`.
@@ -55,7 +78,10 @@ spring.sql.init.schema-locations=classpath:schema.sql
 spring.sql.init.data-locations=classpath:data.sql
 ```
 
-> **Nota**: En H2, la base de datos se crea automáticamente según la URL de conexión especificada en `application.properties`. Para este proyecto, la base de datos se llama "testdb" según la URL: `jdbc:h2:mem:testdb`.
+> **Nota**: En H2, la base de datos se crea automáticamente según la URL de conexión especificada en `application.properties`. Para este proyecto, la base de datos se llama "testdb" y se almacena en el directorio `./data` según la URL: `jdbc:h2:file:./data/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=FALSE`. Los parámetros adicionales tienen los siguientes efectos:
+> - `DB_CLOSE_DELAY=-1`: Mantiene la base de datos abierta hasta que la JVM se cierre
+> - `DB_CLOSE_ON_EXIT=FALSE`: Evita que la base de datos se cierre cuando la última conexión se cierra
+> - `IFEXISTS=FALSE`: Permite crear la base de datos si no existe
 
 ## Estructura de la base de datos
 
@@ -84,12 +110,18 @@ Almacena los teléfonos asociados a cada usuario.
 
 ### Tablas adicionales (preparadas para futuras funcionalidades)
 
-#### configuration
-Almacena parámetros de configuración del sistema.
+#### configuration_type
+Almacena los tipos de configuración del sistema.
 - `id` (BIGINT): Identificador único autoincrementable
-- `config_key` (VARCHAR): Clave de configuración (única)
+- `type_key` (VARCHAR): Clave del tipo de configuración (única)
+- `description` (VARCHAR): Descripción del tipo de configuración
+- Campos de auditoría: `is_active`, `created_at`, `updated_at`
+
+#### configuration
+Almacena valores de configuración asociados a tipos de configuración.
+- `id` (BIGINT): Identificador único autoincrementable
+- `configuration_type_id` (BIGINT): Referencia al tipo de configuración (clave foránea a configuration_type.id)
 - `config_value` (VARCHAR): Valor de configuración
-- `description` (VARCHAR): Descripción de la configuración
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
 #### role
@@ -124,7 +156,15 @@ Representa un usuario en el sistema y mapea a la tabla `users`.
 Representa un teléfono asociado a un usuario y mapea a la tabla `phones`.
 - Relación Many-to-One con User: Múltiples teléfonos pueden pertenecer a un usuario.
 
-Las demás tablas (configuration, role, permission, roles_permissions) están definidas en el esquema de la base de datos pero aún no tienen entidades JPA correspondientes, ya que serán implementadas en futuras versiones del sistema.
+### ConfigurationType
+Representa un tipo de configuración en el sistema y mapea a la tabla `configuration_type`.
+- Relación One-to-Many con Configuration: Un tipo de configuración puede tener múltiples configuraciones asociadas.
+
+### Configuration
+Representa una configuración en el sistema y mapea a la tabla `configuration`.
+- Relación Many-to-One con ConfigurationType: Múltiples configuraciones pueden pertenecer a un tipo de configuración.
+
+Las demás tablas (role, permission, roles_permissions) están definidas en el esquema de la base de datos pero aún no tienen entidades JPA correspondientes, ya que serán implementadas en futuras versiones del sistema.
 
 ---
-> H2 es solo para desarrollo y pruebas. Para producción, utilice una base de datos real y gestione las credenciales mediante servicios seguros de gestión de secretos.
+> H2 es solo para desarrollo y pruebas, incluso en su configuración basada en archivos. Para producción, utilice una base de datos real como PostgreSQL, MySQL u Oracle, y gestione las credenciales mediante servicios seguros de gestión de secretos.
