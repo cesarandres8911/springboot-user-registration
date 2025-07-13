@@ -20,9 +20,9 @@ public class PhoneResponseDTO {
 
     /** Código de ciudad. */
     @Schema(example = "1")
-    private String citycode;
+    private String cityCode;
 
     /** Código de país. */
     @Schema(example = "57")
-    private String contrycode;
+    private String countryCode;
 }

@@ -16,17 +16,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PhoneRequestDTO {
     /** Número de teléfono. */
-    @Schema(example = "1234567")
+    @Schema(example = "56448909381")
     @NotBlank(message = "El número es obligatorio.")
     private String phoneNumber;
 
     /** Código de ciudad. */
     @Schema(example = "1")
     @NotBlank(message = "El código de ciudad es obligatorio.")
-    private String citycode;
+    private String cityCode;
 
     /** Código de país. */
     @Schema(example = "57")
     @NotBlank(message = "El código de país es obligatorio.")
-    private String contrycode;
+    private String countryCode;
 }
