@@ -1,6 +1,9 @@
 # Archivos de entorno
 .env
 
+# Carpeta de base de datos temporal
+/data/
+
 # Archivos y carpetas de construcción
 /build/
 /tmp/
