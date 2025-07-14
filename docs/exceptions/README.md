@@ -16,7 +16,10 @@ La clase `GlobalExceptionHandler` se encuentra en el paquete `com.example.regist
 2. **IllegalArgumentException**: Maneja argumentos inválidos, como intentar registrar un usuario con un correo ya existente, devolviendo código HTTP 400 (BAD_REQUEST).
 3. **BadCredentialsException**: Maneja errores de autenticación cuando las credenciales son incorrectas, devolviendo código HTTP 401 (UNAUTHORIZED).
 4. **UsernameNotFoundException**: Maneja casos donde no se encuentra un usuario, devolviendo código HTTP 404 (NOT_FOUND).
-5. **Exception**: Manejador genérico para cualquier otra excepción no manejada específicamente, devolviendo código HTTP 500 (INTERNAL_SERVER_ERROR).
+5. **InvalidPasswordException**: Maneja errores cuando una contraseña no cumple con los requisitos de validación, devolviendo código HTTP 400 (BAD_REQUEST).
+6. **JwtValidationException**: Maneja errores en la validación de un token JWT, devolviendo código HTTP 401 (UNAUTHORIZED).
+7. **AccessDeniedException**: Maneja errores cuando un usuario no tiene los permisos necesarios para acceder a un recurso, devolviendo código HTTP 403 (FORBIDDEN).
+8. **Exception**: Manejador genérico para cualquier otra excepción no manejada específicamente, devolviendo código HTTP 500 (INTERNAL_SERVER_ERROR).
 
 Cada manejador devuelve una respuesta JSON con un mensaje descriptivo del error, lo que facilita la comprensión del problema por parte del cliente.
 

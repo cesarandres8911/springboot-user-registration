@@ -181,3 +181,14 @@ fetch('http://localhost:8080/api/protected-resource', {
 ```
 
 El token JWT se obtiene durante el registro o inicio de sesión y debe ser almacenado por el cliente para su uso en solicitudes posteriores.
+
+## 🚧 Limitaciones actuales y mejoras futuras
+
+### 🔄 Refresh Tokens
+
+Es importante destacar que la generación de refresh tokens no está dentro del alcance actual de este proyecto. Sin embargo, esta funcionalidad debería ser implementada en el futuro como una mejora de seguridad para la renovación de los tokens JWT.
+
+La implementación de refresh tokens permitiría:
+- Reducir el tiempo de vida de los tokens de acceso, mejorando la seguridad
+- Renovar la sesión del usuario sin necesidad de volver a introducir credenciales
+- Revocar accesos de forma más efectiva en caso de compromisos de seguridad
