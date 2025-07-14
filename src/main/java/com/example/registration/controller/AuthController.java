@@ -11,14 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,8 +26,6 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "API para la autenticación de usuarios")
 public class AuthController {
-
-    private static final String MESSAGE_KEY = "mensaje";
 
     private final UserService userService;
 
@@ -54,25 +49,11 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado",
                     content = @Content(schema = @Schema(implementation = Map.class)))
     })
-    public ResponseEntity<Object> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-        try {
-            UserResponseDTO userResponseDTO = userService.loginUser(
-                    loginRequestDTO.getEmail(),
-                    loginRequestDTO.getPassword()
-            );
-            return ResponseEntity.ok(userResponseDTO);
-        } catch (BadCredentialsException _) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put(MESSAGE_KEY, "Credenciales inválidas");
-            return ResponseEntity.status(401).body(errorResponse);
-        } catch (UsernameNotFoundException e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put(MESSAGE_KEY, e.getMessage());
-            return ResponseEntity.status(404).body(errorResponse);
-        } catch (Exception e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put(MESSAGE_KEY, "Error al iniciar sesión: " + e.getMessage());
-            return ResponseEntity.status(500).body(errorResponse);
-        }
+    public ResponseEntity<UserResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+        UserResponseDTO userResponseDTO = userService.loginUser(
+                loginRequestDTO.getEmail(),
+                loginRequestDTO.getPassword()
+        );
+        return ResponseEntity.ok(userResponseDTO);
     }
 }
