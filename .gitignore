@@ -1,24 +1,26 @@
-# Compiled class file
-*.class
+# Archivos de entorno
+.env
 
-# Log file
+# Carpeta de base de datos temporal
+/data/
+
+# Archivos y carpetas de construcción
+/build/
+/tmp/
+.gradle/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
 *.log
 
-# BlueJ files
-*.ctxt
+# Archivos de configuración de IDE
+.idea/
+*.iml
+.vscode/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# Otros archivos temporales
+*.swp
+*.swo
