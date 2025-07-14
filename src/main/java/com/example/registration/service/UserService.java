@@ -72,7 +72,7 @@ public class UserService implements UserDetailsService {
         // Agregar teléfonos si existen
         if (userRequestDTO.getPhones() != null && !userRequestDTO.getPhones().isEmpty()) {
             List<Phone> phones = userRequestDTO.getPhones().stream()
-                    .map(phoneDTO -> createPhone(phoneDTO, user))
+                    .map(this::createPhone)
                     .toList();
             user.getPhones().addAll(phones);
         }
@@ -85,18 +85,16 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Crea un objeto Phone a partir de un DTO y un usuario.
+     * Crea un objeto Phone a partir de un DTO.
      *
      * @param phoneDTO DTO con la información del teléfono
-     * @param user     Usuario al que pertenece el teléfono
      * @return Objeto Phone creado
      */
-    private Phone createPhone(PhoneRequestDTO phoneDTO, User user) {
+    private Phone createPhone(PhoneRequestDTO phoneDTO) {
         return Phone.builder()
                 .phoneNumber(phoneDTO.getPhoneNumber())
                 .cityCode(phoneDTO.getCityCode())
                 .countryCode(phoneDTO.getCountryCode())
-                .user(user)
                 .build();
     }
 

@@ -32,9 +32,4 @@ public class Phone {
     @Column(name = "country_code", nullable = false)
     private String countryCode;
 
-    /** Usuario al que pertenece el teléfono. */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    private User user;
 }
