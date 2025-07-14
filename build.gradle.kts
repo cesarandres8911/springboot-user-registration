@@ -24,6 +24,7 @@ object Versions {
     const val JUNIT_PLATFORM = "1.12.2"
     const val JUNIT_JUPITER = "5.12.2"
     const val JWT = "0.11.5"
+    const val MAPSTRUCT = "1.5.5.Final"
 }
 
 
@@ -40,10 +41,13 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:${Versions.JWT}")
 	implementation("io.jsonwebtoken:jjwt-impl:${Versions.JWT}")
 	implementation("io.jsonwebtoken:jjwt-jackson:${Versions.JWT}")
+	implementation("org.mapstruct:mapstruct:${Versions.MAPSTRUCT}")
 
 	// --- Annotation processors ---
 	annotationProcessor("org.projectlombok:lombok:${Versions.LOMBOK}")
+	annotationProcessor("org.mapstruct:mapstruct-processor:${Versions.MAPSTRUCT}")
 	testAnnotationProcessor("org.projectlombok:lombok:${Versions.LOMBOK}")
+	testAnnotationProcessor("org.mapstruct:mapstruct-processor:${Versions.MAPSTRUCT}")
 
 	// --- Runtime dependencies ---
 	runtimeOnly("com.h2database:h2:${Versions.H2}")
