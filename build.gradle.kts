@@ -36,6 +36,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springdoc:springdoc-openapi-starter-common:${Versions.SPRINGDOC}")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${Versions.SPRINGDOC}")
 	implementation("io.jsonwebtoken:jjwt-api:${Versions.JWT}")
 	implementation("io.jsonwebtoken:jjwt-impl:${Versions.JWT}")
 	implementation("io.jsonwebtoken:jjwt-jackson:${Versions.JWT}")
