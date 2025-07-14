@@ -20,6 +20,7 @@ Este proyecto es un sistema de registro de usuarios construido con Spring Boot. 
 - Lombok
 - SLF4J (Logger)
 - Springdoc OpenAPI (para documentación y anotaciones @Schema en los DTOs)
+- MapStruct (para mapeo entre entidades y DTOs)
 
 ## 🚀 Primeros pasos
 
@@ -53,14 +54,14 @@ Para registrar un nuevo usuario, puede utilizar los siguientes métodos:
 curl -X POST http://localhost:8080/api/users/register \
   -H "Content-Type: application/json" \
   -d '{
-    "fullName": "Juan Rodriguez",
-    "userEmail": "juan@rodriguez.org",
-    "userPassword": "hunter2",
+    "name": "Juan Rodriguez",
+    "email": "juan@rodriguez.org",
+    "password": "hunter2",
     "phones": [
       {
-        "phoneNumber": "56448909381",
-        "cityCode": "1",
-        "countryCode": "57"
+        "number": "1234567",
+        "citycode": "1",
+        "contrycode": "57"
       }
     ]
   }'
@@ -74,14 +75,14 @@ curl -X POST http://localhost:8080/api/users/register \
 4. En la pestaña "Body", seleccione "raw" y "JSON", y agregue el siguiente contenido:
    ```json
    {
-     "fullName": "Juan Rodriguez",
-     "userEmail": "juan@rodriguez.org",
-     "userPassword": "hunter2",
+     "name": "Juan Rodriguez",
+     "email": "juan@rodriguez.org",
+     "password": "hunter2",
      "phones": [
        {
-         "phoneNumber": "56448909381",
-         "cityCode": "1",
-         "countryCode": "57"
+         "number": "1234567",
+         "citycode": "1",
+         "contrycode": "57"
        }
      ]
    }
@@ -214,13 +215,21 @@ A continuación se presentan los enlaces a la documentación disponible en el pr
 - ✅ **Validación de contraseñas:** [`docs/utils/README-PasswordValidator.md`](docs/utils/README-PasswordValidator.md)
 - 🔐 **Cifrado de contraseñas:** [`docs/utils/README-PasswordEncoderUtil.md`](docs/utils/README-PasswordEncoderUtil.md)
 
+### 🔄 Mappers
+- 🔄 **Documentación de mappers:** [`docs/mappers/README.md`](docs/mappers/README.md)
+
+### 🛡️ Excepciones
+- 🛡️ **Documentación de manejo de excepciones:** [`docs/exceptions/README.md`](docs/exceptions/README.md)
+
 ### 📝 Ejercicio propuesto
 - 📋 **Descripción del ejercicio:** [`docs/exercise/integration_proposed_exercise.md`](docs/exercise/integration_proposed_exercise.md)
 
 ---
 
 ### 🔄 Cambios recientes
+- 🛡️ Se agregó documentación detallada sobre el manejo de excepciones y posibles mejoras futuras.
 - ✅ Se implementaron utilidades para la validación de contraseñas basadas en configuraciones almacenadas en la base de datos.
 - 📚 Se agregó documentación detallada sobre las utilidades de validación de contraseñas.
 - 🔄 Se actualizó la documentación para reflejar el uso de H2 como base de datos en memoria, eliminando referencias a PostgreSQL, Docker y .env para la base de datos.
 - 📋 Se actualizó la documentación de la base de datos para incluir información detallada sobre el esquema de la base de datos y las entidades JPA implementadas.
+- 🔄 Se agregó documentación sobre el uso de MapStruct como biblioteca para el mapeo entre entidades y DTOs.
