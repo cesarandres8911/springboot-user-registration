@@ -20,9 +20,9 @@ class PasswordEncoderUtilTest {
 
     @Test
     void testPasswordEncoder() {
-        // Verificar que el bean PasswordEncoder no sea nulo
-        PasswordEncoder encoder = passwordEncoderUtil.passwordEncoderUtil();
-        assertNotNull(encoder, "El bean PasswordEncoder no debe ser nulo");
+        // Verificar que el PasswordEncoder no sea nulo
+        PasswordEncoder encoder = passwordEncoderUtil.getPasswordEncoder();
+        assertNotNull(encoder, "El PasswordEncoder no debe ser nulo");
     }
 
     @Test

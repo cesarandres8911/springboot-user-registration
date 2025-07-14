@@ -1,8 +1,8 @@
 package com.example.registration.utils;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,15 @@ import org.springframework.stereotype.Component;
  * que es considerado una de las mejores prácticas para el almacenamiento seguro de contraseñas.
  * </p>
  */
+@Getter
 @Component
 public class PasswordEncoderUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(PasswordEncoderUtil.class);
+    /**
+     * -- GETTER --
+     * Proporciona el PasswordEncoder utilizado por esta utilidad.
+     */
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -27,16 +32,6 @@ public class PasswordEncoderUtil {
     public PasswordEncoderUtil() {
         this.passwordEncoder = new BCryptPasswordEncoder();
         logger.info("Inicializado el codificador de contraseñas BCrypt");
-    }
-
-    /**
-     * Proporciona el bean PasswordEncoder para ser utilizado en la aplicación.
-     *
-     * @return Una instancia de BCryptPasswordEncoder
-     */
-    @Bean
-    public PasswordEncoder passwordEncoderUtil() {
-        return passwordEncoder;
     }
 
     /**
@@ -58,7 +53,7 @@ public class PasswordEncoderUtil {
     /**
      * Verifica si una contraseña en texto plano coincide con una contraseña cifrada.
      *
-     * @param rawPassword La contraseña en texto plano
+     * @param rawPassword     La contraseña en texto plano
      * @param encodedPassword La contraseña cifrada
      * @return true si la contraseña coincide, false en caso contrario
      */
