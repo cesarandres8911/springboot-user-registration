@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,24 +31,13 @@ public class UserResponseDTO {
 
     /** Fecha del último login del usuario. */
     @Schema(example = "2025-07-11T10:15:30")
-    private LocalDateTime lastLogin;
-
-    /** Nombre completo del usuario. */
-    @Schema(example = "Juan Rodriguez")
-    private String fullName;
-
-    /** Correo electrónico del usuario. */
-    @Schema(example = "juan@rodriguez.org")
-    private String userEmail;
+    private LocalDateTime last_login;
 
     /** Token de acceso del usuario. */
     @Schema(example = "token1234")
-    private String userToken;
+    private String token;
 
     /** Indica si el usuario está activo. */
     @Schema(example = "true")
-    private boolean isActive;
-
-    /** Lista de teléfonos asociados al usuario. */
-    private List<PhoneResponseDTO> phones;
+    private boolean isactive;
 }
