@@ -35,7 +35,7 @@ class PasswordValidationTest {
         addConfiguration("password.min.lowercase", "1");
         addConfiguration("password.min.digits", "1");
         addConfiguration("password.min.special", "1");
-        addConfiguration("password.allowed.special", "-.#$%&");
+        addConfiguration("password.allowed.special", "-.#&");
 
         // Inicializar el validador
         validator = new PasswordValidator(configurations);
