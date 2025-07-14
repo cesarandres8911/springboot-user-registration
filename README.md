@@ -107,7 +107,7 @@ Se utiliza Springdoc OpenAPI para generar y documentar la API con OpenAPI 3 y Sw
 
 El ejercicio propuesto para este proyecto se encuentra en:
 
-- `docs/ejercicio_propuesto_integracion.md`
+- [`docs/ejercicio/ejercicio_propuesto_integracion.md`](docs/ejercicio/ejercicio_propuesto_integracion.md)
 
 ## Licencia
 
@@ -135,6 +135,14 @@ La documentación y detalles de la base de datos, así como el modelo y scripts 
 
 Allí se explica cómo utilizar H2 como base de datos en memoria, la configuración en `application.properties` y el modelo de datos completo, incluyendo las entidades implementadas (User, Phone) y las tablas adicionales preparadas para futuras funcionalidades (configuration, role, permission, roles_permissions).
 
+## Seguridad
+
+La documentación sobre la implementación de seguridad y JWT (JSON Web Tokens) en el proyecto se encuentra en:
+
+- [`docs/security/README.md`](docs/security/README.md)
+
+Este documento describe cómo funciona la autenticación basada en tokens JWT, los endpoints de autenticación disponibles, el proceso de validación de tokens, la configuración de seguridad y cómo utilizar JWT en las peticiones a la API.
+
 ## Utilidades
 
 El proyecto incluye varias utilidades para facilitar tareas comunes:
@@ -154,3 +162,26 @@ La documentación detallada se encuentra en:
 - Se agregó documentación detallada sobre las utilidades de validación de contraseñas.
 - Se actualizó la documentación para reflejar el uso de H2 como base de datos en memoria, eliminando referencias a PostgreSQL, Docker y .env para la base de datos.
 - Se actualizó la documentación de la base de datos para incluir información detallada sobre el esquema de la base de datos y las entidades JPA implementadas.
+
+## Documentación completa
+
+A continuación se presenta un índice de toda la documentación disponible en el proyecto:
+
+### Documentación principal
+- [README.md](README.md) - Este documento, con información general del proyecto
+
+### Ejercicio propuesto
+- [docs/ejercicio/ejercicio_propuesto_integracion.md](docs/ejercicio/ejercicio_propuesto_integracion.md) - Descripción del ejercicio propuesto
+
+### Base de datos
+- [docs/database/README.md](docs/database/README.md) - Documentación sobre la base de datos
+
+### Seguridad
+- [docs/security/README.md](docs/security/README.md) - Documentación sobre seguridad y JWT
+
+### Utilidades
+- [docs/utils/README.md](docs/utils/README.md) - Índice de utilidades de contraseñas
+  - [docs/utils/README-PasswordConfigurationType.md](docs/utils/README-PasswordConfigurationType.md) - Documentación sobre tipos de configuración de contraseñas
+  - [docs/utils/README-PasswordRegexGenerator.md](docs/utils/README-PasswordRegexGenerator.md) - Documentación sobre generación de expresiones regulares para contraseñas
+  - [docs/utils/README-PasswordValidator.md](docs/utils/README-PasswordValidator.md) - Documentación sobre validación de contraseñas
+  - [docs/utils/README-PasswordEncoderUtil.md](docs/utils/README-PasswordEncoderUtil.md) - Documentación sobre cifrado de contraseñas

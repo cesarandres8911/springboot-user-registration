@@ -21,7 +21,7 @@ class PasswordEncoderUtilTest {
     @Test
     void testPasswordEncoder() {
         // Verificar que el bean PasswordEncoder no sea nulo
-        PasswordEncoder encoder = passwordEncoderUtil.passwordEncoder();
+        PasswordEncoder encoder = passwordEncoderUtil.passwordEncoderUtil();
         assertNotNull(encoder, "El bean PasswordEncoder no debe ser nulo");
     }
 
@@ -30,7 +30,7 @@ class PasswordEncoderUtilTest {
         // Verificar que la contraseña cifrada no sea igual a la original
         String rawPassword = "Password123!";
         String encodedPassword = passwordEncoderUtil.encode(rawPassword);
-        
+
         assertNotNull(encodedPassword, "La contraseña cifrada no debe ser nula");
         assertNotEquals(rawPassword, encodedPassword, "La contraseña cifrada no debe ser igual a la original");
         assertFalse(encodedPassword.isEmpty(), "La contraseña cifrada debe tener longitud mayor a cero");
@@ -41,7 +41,7 @@ class PasswordEncoderUtilTest {
         // Verificar que la contraseña original coincida con su versión cifrada
         String rawPassword = "Password123!";
         String encodedPassword = passwordEncoderUtil.encode(rawPassword);
-        
+
         assertTrue(passwordEncoderUtil.matches(rawPassword, encodedPassword), 
                 "La contraseña original debe coincidir con su versión cifrada");
     }
@@ -52,7 +52,7 @@ class PasswordEncoderUtilTest {
         String password1 = "Password123!";
         String password2 = "DifferentPassword456!";
         String encodedPassword1 = passwordEncoderUtil.encode(password1);
-        
+
         assertFalse(passwordEncoderUtil.matches(password2, encodedPassword1), 
                 "Contraseñas diferentes no deben coincidir");
     }
@@ -62,7 +62,7 @@ class PasswordEncoderUtilTest {
         // Verificar que se lance una excepción al intentar cifrar una contraseña nula o vacía
         assertThrows(IllegalArgumentException.class, () -> passwordEncoderUtil.encode(null),
                 "Debe lanzar una excepción al intentar cifrar una contraseña nula");
-        
+
         assertThrows(IllegalArgumentException.class, () -> passwordEncoderUtil.encode(""),
                 "Debe lanzar una excepción al intentar cifrar una contraseña vacía");
     }
@@ -72,10 +72,10 @@ class PasswordEncoderUtilTest {
         // Verificar que contraseñas nulas no coincidan
         String rawPassword = "Password123!";
         String encodedPassword = passwordEncoderUtil.encode(rawPassword);
-        
+
         assertFalse(passwordEncoderUtil.matches(null, encodedPassword), 
                 "Una contraseña nula no debe coincidir con una contraseña cifrada");
-        
+
         assertFalse(passwordEncoderUtil.matches(rawPassword, null), 
                 "Una contraseña no debe coincidir con una contraseña cifrada nula");
     }

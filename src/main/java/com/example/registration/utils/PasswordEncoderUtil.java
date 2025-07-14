@@ -35,7 +35,7 @@ public class PasswordEncoderUtil {
      * @return Una instancia de BCryptPasswordEncoder
      */
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoderUtil() {
         return passwordEncoder;
     }
 
@@ -49,7 +49,7 @@ public class PasswordEncoderUtil {
         if (rawPassword == null || rawPassword.isEmpty()) {
             throw new IllegalArgumentException("La contraseña no puede ser nula o vacía");
         }
-        
+
         String encodedPassword = passwordEncoder.encode(rawPassword);
         logger.debug("Contraseña cifrada correctamente");
         return encodedPassword;
@@ -66,7 +66,7 @@ public class PasswordEncoderUtil {
         if (rawPassword == null || encodedPassword == null) {
             return false;
         }
-        
+
         boolean matches = passwordEncoder.matches(rawPassword, encodedPassword);
         logger.debug("Verificación de contraseña: {}", matches ? "exitosa" : "fallida");
         return matches;
