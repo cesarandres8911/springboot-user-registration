@@ -10,7 +10,7 @@ import lombok.*;
 @Table(name = "phones")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -32,4 +32,8 @@ public class Phone {
     @Column(name = "country_code", nullable = false)
     private String countryCode;
 
+    /** Usuario al que pertenece este teléfono. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
