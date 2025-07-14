@@ -1,9 +1,10 @@
 package com.example.registration.service;
 
 import com.example.registration.dto.PhoneRequestDTO;
-import com.example.registration.dto.PhoneResponseDTO;
 import com.example.registration.dto.UserRequestDTO;
 import com.example.registration.dto.UserResponseDTO;
+import com.example.registration.mapper.PhoneMapper;
+import com.example.registration.mapper.UserMapper;
 import com.example.registration.model.Phone;
 import com.example.registration.model.User;
 import com.example.registration.repository.UserRepository;
@@ -31,11 +32,15 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserMapper userMapper;
+    private final PhoneMapper phoneMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, UserMapper userMapper, PhoneMapper phoneMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.userMapper = userMapper;
+        this.phoneMapper = phoneMapper;
     }
 
     /**
@@ -48,22 +53,21 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
         // Verificar si el correo ya está registrado
-        if (userRepository.existsByUserEmail(userRequestDTO.getUserEmail())) {
+        if (userRepository.existsByUserEmail(userRequestDTO.getEmail())) {
             throw new IllegalArgumentException("El correo ya registrado");
         }
 
-        // Crear el usuario
+        // Crear el usuario usando el mapper
+        User user = userMapper.userRequestDTOToUser(userRequestDTO);
+
+        // Establecer campos adicionales
         LocalDateTime now = LocalDateTime.now();
-        User user = User.builder()
-                .fullName(userRequestDTO.getFullName())
-                .userEmail(userRequestDTO.getUserEmail())
-                .userPassword(passwordEncoder.encode(userRequestDTO.getUserPassword()))
-                .lastLogin(now)
-                .createdAt(now)
-                .updatedAt(now)
-                .isActive(true)
-                .phones(new ArrayList<>())
-                .build();
+        user.setUserPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+        user.setLastLogin(now);
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
+        user.setActive(true);
+        user.setPhones(new ArrayList<>());
 
         // Generar token JWT
         String token = jwtService.generateToken(user.getUserEmail());
@@ -72,7 +76,11 @@ public class UserService implements UserDetailsService {
         // Agregar teléfonos si existen
         if (userRequestDTO.getPhones() != null && !userRequestDTO.getPhones().isEmpty()) {
             List<Phone> phones = userRequestDTO.getPhones().stream()
-                    .map(this::createPhone)
+                    .map(phoneDTO -> {
+                        Phone phone = createPhone(phoneDTO);
+                        phone.setUser(user);
+                        return phone;
+                    })
                     .toList();
             user.getPhones().addAll(phones);
         }
@@ -80,8 +88,8 @@ public class UserService implements UserDetailsService {
         // Guardar el usuario
         User savedUser = userRepository.save(user);
 
-        // Convertir a DTO de respuesta
-        return convertToResponseDTO(savedUser);
+        // Convertir a DTO de respuesta usando el mapper
+        return userMapper.userToUserResponseDTO(savedUser);
     }
 
     /**
@@ -91,38 +99,9 @@ public class UserService implements UserDetailsService {
      * @return Objeto Phone creado
      */
     private Phone createPhone(PhoneRequestDTO phoneDTO) {
-        return Phone.builder()
-                .phoneNumber(phoneDTO.getPhoneNumber())
-                .cityCode(phoneDTO.getCityCode())
-                .countryCode(phoneDTO.getCountryCode())
-                .build();
+        return phoneMapper.phoneRequestDTOToPhone(phoneDTO);
     }
 
-    /**
-     * Convierte un objeto User a un DTO de respuesta.
-     *
-     * @param user Usuario a convertir
-     * @return DTO de respuesta con la información del usuario
-     */
-    private UserResponseDTO convertToResponseDTO(User user) {
-        return UserResponseDTO.builder()
-                .id(user.getId())
-                .fullName(user.getFullName())
-                .userEmail(user.getUserEmail())
-                .created(user.getCreatedAt())
-                .modified(user.getUpdatedAt())
-                .lastLogin(user.getLastLogin())
-                .userToken(user.getUserToken())
-                .isActive(user.isActive())
-                .phones(user.getPhones().stream()
-                        .map(phone -> PhoneResponseDTO.builder()
-                                .phoneNumber(phone.getPhoneNumber())
-                                .cityCode(phone.getCityCode())
-                                .countryCode(phone.getCountryCode())
-                                .build())
-                        .toList())
-                .build();
-    }
 
     /**
      * Carga los detalles de un usuario por su nombre de usuario (email).
@@ -175,7 +154,7 @@ public class UserService implements UserDetailsService {
         // Guardar cambios
         User updatedUser = userRepository.save(user);
 
-        // Convertir a DTO de respuesta
-        return convertToResponseDTO(updatedUser);
+        // Convertir a DTO de respuesta usando el mapper
+        return userMapper.userToUserResponseDTO(updatedUser);
     }
 }
