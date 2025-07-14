@@ -1,10 +1,10 @@
-# PasswordConfigurationType
+# 🔧 PasswordConfigurationType
 
-## Descripción
+## 📋 Descripción
 
 Enumeración que representa los tipos de configuración para validación de contraseñas. Mapea los valores de `type_key` en la tabla `configuration_type` relacionados con la validación de contraseñas.
 
-## Tipos disponibles
+## 📝 Tipos disponibles
 
 - `MIN_LENGTH`: Longitud mínima de caracteres para la contraseña.
 - `MAX_LENGTH`: Longitud máxima de caracteres para la contraseña.
@@ -14,7 +14,7 @@ Enumeración que representa los tipos de configuración para validación de cont
 - `MIN_SPECIAL`: Cantidad mínima de caracteres especiales en la contraseña.
 - `ALLOWED_SPECIAL`: Caracteres especiales permitidos en la contraseña.
 
-## Configuraciones por defecto
+## ⚙️ Configuraciones por defecto
 
 Si alguna configuración no está presente en la lista proporcionada, se utilizarán los siguientes valores por defecto:
 
@@ -26,7 +26,7 @@ Si alguna configuración no está presente en la lista proporcionada, se utiliza
 - `MIN_SPECIAL`: 0 (no requerido)
 - `ALLOWED_SPECIAL`: "-.#$%&"
 
-## Notas importantes
+## ⚠️ Notas importantes
 
 1. La longitud mínima no puede ser mayor que la longitud máxima.
 2. Si se especifica una cantidad mínima de caracteres especiales, también se debe especificar qué caracteres especiales están permitidos.

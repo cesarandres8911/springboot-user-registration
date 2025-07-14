@@ -1,18 +1,18 @@
-# PasswordRegexGenerator
+# 🔍 PasswordRegexGenerator
 
-## Descripción
+## 📋 Descripción
 
 Utilidad para generar expresiones regulares para validación de contraseñas basadas en configuraciones almacenadas en la base de datos.
 
-## Métodos principales
+## 🔧 Métodos principales
 
 - `generateRegex(List<Configuration> configurations)`: Genera una expresión regular para validar contraseñas basada en una lista de configuraciones.
 
-## Uso
+## 🛠️ Uso
 
 Esta utilidad se utiliza internamente por el `PasswordValidator` para generar expresiones regulares dinámicas basadas en las configuraciones de contraseñas almacenadas en la base de datos.
 
-## Expresiones regulares generadas
+## 📝 Expresiones regulares generadas
 
 Las expresiones regulares generadas por esta utilidad validan que la contraseña:
 
@@ -23,7 +23,7 @@ Las expresiones regulares generadas por esta utilidad validan que la contraseña
 5. Contenga al menos la cantidad mínima configurada de caracteres especiales
 6. Contenga solo caracteres permitidos (letras, dígitos y los caracteres especiales especificados)
 
-## Notas importantes
+## ⚠️ Notas importantes
 
 1. La expresión regular generada valida que la contraseña contenga solo caracteres permitidos (letras, dígitos y los caracteres especiales especificados).
 2. Si se especifica una cantidad mínima de caracteres especiales, también se debe especificar qué caracteres especiales están permitidos.

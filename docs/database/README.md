@@ -1,16 +1,16 @@
-# Documentación de la Base de Datos
+# 💾 Documentación de la Base de Datos
 
-## Entorno de desarrollo y pruebas
+## 🧪 Entorno de desarrollo y pruebas
 Este proyecto utiliza H2 como base de datos basada en archivos para desarrollo y pruebas. La configuración se encuentra en `src/main/resources/application.properties` y no requiere archivos `.env` ni variables de entorno para usuario o contraseña. Los datos se almacenan en el directorio `./data` del proyecto.
 
-## Entorno productivo (recomendación)
+## 🏭 Entorno productivo (recomendación)
 Para entornos productivos, se recomienda utilizar una base de datos robusta como PostgreSQL, MySQL, Oracle, etc. En estos casos:
 
 - **No utilice H2 en memoria para producción.**
 - Gestione usuario, contraseña y otros datos sensibles mediante servicios especializados y seguros de gestión de secretos, como AWS Secrets Manager, AWS Parameter Store, Azure Key Vault, Google Secret Manager, HashiCorp Vault, entre otros.
 - Configure su `application.properties` para leer los valores de estos servicios de forma segura y nunca almacene credenciales sensibles en archivos de texto plano ni en el repositorio.
 
-## Acceso a la consola H2
+## 🖥️ Acceso a la consola H2
 Para desarrollo, acceda a la consola web de H2 en:
 
     http://localhost:8080/h2-console
@@ -19,7 +19,7 @@ Las credenciales y la URL de conexión están documentadas en el archivo de prop
 
 Al conectarse a la consola H2, utilice la URL `jdbc:h2:file:./data/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=FALSE` en lugar de la URL por defecto `jdbc:h2:~/test` que aparece en el formulario de conexión.
 
-## Conexión desde IntelliJ IDEA
+## 🔌 Conexión desde IntelliJ IDEA
 Para conectarse a la base de datos desde IntelliJ IDEA:
 
 1. Abra la pestaña "Database" en el lado derecho de IntelliJ IDEA
@@ -42,7 +42,7 @@ Ahora debería poder ver las tablas en la vista de base de datos de IntelliJ IDE
 - Verificar que la aplicación haya creado correctamente las tablas ejecutándola y accediendo a la consola H2
 - Asegurarse de que está utilizando exactamente la misma cadena de conexión que se usa en application.properties
 
-## Zona horaria recomendada
+## 🕒 Zona horaria recomendada
 Para asegurar la correcta gestión de fechas y horas en Colombia, la aplicación y la base de datos deben operar en la zona horaria `America/Bogota`.
 
 En el archivo `application.properties` se debe incluir:
@@ -53,7 +53,7 @@ spring.jackson.time-zone=America/Bogota
 
 Esto garantiza que todos los registros de auditoría y operaciones con fechas se almacenen y consulten en la zona horaria local de Colombia.
 
-## Inicialización de la base de datos
+## 🚀 Inicialización de la base de datos
 
 La base de datos se inicializa automáticamente al arrancar la aplicación mediante dos archivos:
 
@@ -83,13 +83,13 @@ spring.sql.init.data-locations=classpath:data.sql
 > - `DB_CLOSE_ON_EXIT=FALSE`: Evita que la base de datos se cierre cuando la última conexión se cierra
 > - `IFEXISTS=FALSE`: Permite crear la base de datos si no existe
 
-## Estructura de la base de datos
+## 📊 Estructura de la base de datos
 
 El esquema de la base de datos está definido en el archivo `src/main/resources/schema.sql` y consta de las siguientes tablas:
 
-### Tablas principales
+### 📑 Tablas principales
 
-#### users
+#### 👤 users
 Almacena información de los usuarios registrados en el sistema.
 - `id` (UUID): Identificador único del usuario
 - `full_name` (VARCHAR): Nombre completo del usuario
@@ -99,68 +99,67 @@ Almacena información de los usuarios registrados en el sistema.
 - `user_token` (VARCHAR): Token de acceso API
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-#### phones
+#### 📱 phones
 Almacena los teléfonos asociados a cada usuario.
 - `id` (BIGINT): Identificador único autoincrementable
 - `phone_number` (VARCHAR): Número de teléfono
-- `citycode` (VARCHAR): Código de ciudad
-- `contrycode` (VARCHAR): Código de país
+- `city_code` (VARCHAR): Código de ciudad
+- `country_code` (VARCHAR): Código de país
 - `user_id` (UUID): Llave foránea a la tabla users
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-### Tablas adicionales (preparadas para futuras funcionalidades)
+### 📑 Tablas adicionales (preparadas para futuras funcionalidades)
 
-#### configuration_type
+#### ⚙️ configuration_type
 Almacena los tipos de configuración del sistema.
 - `id` (BIGINT): Identificador único autoincrementable
 - `type_key` (VARCHAR): Clave del tipo de configuración (única)
 - `description` (VARCHAR): Descripción del tipo de configuración
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-#### configuration
+#### ⚙️ configuration
 Almacena valores de configuración asociados a tipos de configuración.
 - `id` (BIGINT): Identificador único autoincrementable
 - `configuration_type_id` (BIGINT): Referencia al tipo de configuración (clave foránea a configuration_type.id)
 - `config_value` (VARCHAR): Valor de configuración
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-#### role
+#### 👑 role
 Almacena los roles de usuario (ejemplo: administrador).
 - `id` (BIGINT): Identificador único autoincrementable
 - `role_name` (VARCHAR): Nombre del rol (único)
 - `description` (VARCHAR): Descripción del rol
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-#### permission
+#### 🔑 permission
 Almacena los permisos que pueden asignarse a los roles.
 - `id` (BIGINT): Identificador único autoincrementable
 - `permission_name` (VARCHAR): Nombre del permiso (único)
 - `description` (VARCHAR): Descripción del permiso
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-#### roles_permissions
+#### 🔄 roles_permissions
 Relaciona roles con permisos (muchos a muchos).
 - `role_id` (BIGINT): Llave foránea a la tabla role
 - `permission_id` (BIGINT): Llave foránea a la tabla permission
 - Llave primaria compuesta: (role_id, permission_id)
 
-## Entidades JPA implementadas
+## 🏛️ Entidades JPA implementadas
 
 Actualmente, el sistema tiene implementadas las siguientes entidades JPA:
 
-### User
+### 👤 User
 Representa un usuario en el sistema y mapea a la tabla `users`.
 - Relación One-to-Many con Phone: Un usuario puede tener múltiples teléfonos.
 
-### Phone
+### 📱 Phone
 Representa un teléfono asociado a un usuario y mapea a la tabla `phones`.
-- Relación Many-to-One con User: Múltiples teléfonos pueden pertenecer a un usuario.
 
-### ConfigurationType
+### ⚙️ ConfigurationType
 Representa un tipo de configuración en el sistema y mapea a la tabla `configuration_type`.
 - Relación One-to-Many con Configuration: Un tipo de configuración puede tener múltiples configuraciones asociadas.
 
-### Configuration
+### ⚙️ Configuration
 Representa una configuración en el sistema y mapea a la tabla `configuration`.
 - Relación Many-to-One con ConfigurationType: Múltiples configuraciones pueden pertenecer a un tipo de configuración.
 

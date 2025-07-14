@@ -1,17 +1,17 @@
-# Seguridad y JWT en el Proyecto
+# 🔐 Seguridad y JWT en el Proyecto
 
 Este documento describe la implementación de seguridad y JWT (JSON Web Tokens) en el proyecto de registro de usuarios, explicando cómo funciona y cómo utilizarla.
 
-## Índice
+## 📑 Índice
 
-1. [Visión General](#visión-general)
-2. [Implementación de JWT](#implementación-de-jwt)
-3. [Endpoints de Autenticación](#endpoints-de-autenticación)
-4. [Proceso de Validación de Tokens](#proceso-de-validación-de-tokens)
-5. [Configuración de Seguridad](#configuración-de-seguridad)
-6. [Uso de JWT en Peticiones](#uso-de-jwt-en-peticiones)
+1. [📋 Visión General](#-visión-general)
+2. [🔑 Implementación de JWT](#-implementación-de-jwt)
+3. [🔌 Endpoints de Autenticación](#-endpoints-de-autenticación)
+4. [✅ Proceso de Validación de Tokens](#-proceso-de-validación-de-tokens)
+5. [⚙️ Configuración de Seguridad](#-configuración-de-seguridad)
+6. [📤 Uso de JWT en Peticiones](#-uso-de-jwt-en-peticiones)
 
-## Visión General
+## 📋 Visión General
 
 El proyecto implementa un sistema de autenticación basado en tokens JWT (JSON Web Tokens) para proteger los recursos y endpoints de la API. La seguridad está configurada utilizando Spring Security y proporciona:
 
@@ -21,9 +21,9 @@ El proyecto implementa un sistema de autenticación basado en tokens JWT (JSON W
 - Gestión de sesiones sin estado (stateless)
 - Codificación segura de contraseñas con BCrypt
 
-## Implementación de JWT
+## 🔑 Implementación de JWT
 
-### JwtService
+### 🛠️ JwtService
 
 El servicio `JwtService` es el componente central para la gestión de tokens JWT y proporciona las siguientes funcionalidades:
 
@@ -36,7 +36,7 @@ Características principales:
 - Tiempo de expiración configurable (por defecto: 24 horas)
 - Clave secreta configurable mediante propiedades de la aplicación
 
-### JwtAuthenticationFilter
+### 🔍 JwtAuthenticationFilter
 
 El filtro `JwtAuthenticationFilter` intercepta todas las solicitudes HTTP y:
 
@@ -45,9 +45,9 @@ El filtro `JwtAuthenticationFilter` intercepta todas las solicitudes HTTP y:
 3. Carga los detalles del usuario si el token es válido
 4. Establece la autenticación en el contexto de seguridad de Spring
 
-## Endpoints de Autenticación
+## 🔌 Endpoints de Autenticación
 
-### Registro de Usuario
+### 📝 Registro de Usuario
 
 **Endpoint**: `POST /api/users/register`
 
@@ -90,7 +90,7 @@ El filtro `JwtAuthenticationFilter` intercepta todas las solicitudes HTTP y:
 }
 ```
 
-### Inicio de Sesión
+### 🔐 Inicio de Sesión
 
 **Endpoint**: `POST /api/auth/login`
 
@@ -125,7 +125,7 @@ El filtro `JwtAuthenticationFilter` intercepta todas las solicitudes HTTP y:
 }
 ```
 
-## Proceso de Validación de Tokens
+## ✅ Proceso de Validación de Tokens
 
 El proceso de validación de tokens JWT sigue estos pasos:
 
@@ -136,7 +136,7 @@ El proceso de validación de tokens JWT sigue estos pasos:
 5. El filtro establece la autenticación en el contexto de seguridad de Spring
 6. La solicitud continúa su procesamiento normal si la autenticación es exitosa
 
-## Configuración de Seguridad
+## ⚙️ Configuración de Seguridad
 
 La configuración de seguridad se define en la clase `SecurityConfig` y establece:
 
@@ -150,7 +150,7 @@ La configuración de seguridad se define en la clase `SecurityConfig` y establec
   - Permite acceso público a la documentación Swagger
   - Requiere autenticación para todos los demás endpoints
 
-## Uso de JWT en Peticiones
+## 📤 Uso de JWT en Peticiones
 
 Para acceder a endpoints protegidos, los clientes deben incluir el token JWT en el encabezado de autorización de sus solicitudes HTTP:
 

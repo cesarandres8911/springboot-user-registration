@@ -1,15 +1,15 @@
-# PasswordValidator
+# ✅ PasswordValidator
 
-## Descripción
+## 📋 Descripción
 
 Utilidad para validar contraseñas según configuraciones almacenadas en la base de datos. Utiliza `PasswordRegexGenerator` para generar una expresión regular basada en configuraciones y luego valida contraseñas contra esa expresión.
 
-## Métodos principales
+## 🔧 Métodos principales
 
 - `isValid(String password)`: Valida si una contraseña cumple con las reglas de configuración.
 - `getRegexPattern()`: Obtiene la expresión regular utilizada para validar contraseñas.
 
-## Uso
+## 🛠️ Uso
 
 Para utilizar las utilidades de validación, primero obtenga las configuraciones de la base de datos, luego cree un validador de contraseñas con esas configuraciones, y finalmente valide las contraseñas utilizando el método `isValid`.
 
@@ -31,7 +31,7 @@ Ejemplo de uso:
         System.out.println("La contraseña no cumple con las reglas de configuración");
     }
 
-## Reglas de validación
+## 📝 Reglas de validación
 
 El validador verifica que la contraseña cumpla con todas las siguientes reglas:
 
@@ -42,7 +42,7 @@ El validador verifica que la contraseña cumpla con todas las siguientes reglas:
 5. Contenga al menos la cantidad mínima configurada de caracteres especiales
 6. Contenga solo caracteres permitidos (letras, dígitos y los caracteres especiales especificados)
 
-## Notas importantes
+## ⚠️ Notas importantes
 
 1. La longitud mínima no puede ser mayor que la longitud máxima.
 2. Si se especifica una cantidad mínima de caracteres especiales, también se debe especificar qué caracteres especiales están permitidos.

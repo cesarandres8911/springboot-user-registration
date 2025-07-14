@@ -1,16 +1,16 @@
-# PasswordEncoderUtil
+# 🔐 PasswordEncoderUtil
 
-## Descripción
+## 📋 Descripción
 
 Utilidad para el cifrado de contraseñas utilizando BCrypt. Esta clase proporciona métodos para cifrar contraseñas y verificar si una contraseña coincide con su versión cifrada. Utiliza el algoritmo BCrypt de Spring Security, que es considerado una de las mejores prácticas para el almacenamiento seguro de contraseñas.
 
-## Métodos principales
+## 🔍 Métodos principales
 
 - `encode(String rawPassword)`: Cifra una contraseña utilizando el algoritmo BCrypt.
 - `matches(String rawPassword, String encodedPassword)`: Verifica si una contraseña en texto plano coincide con una contraseña cifrada.
 - `passwordEncoder()`: Proporciona el bean PasswordEncoder para ser utilizado en la aplicación.
 
-## Uso
+## 🛠️ Uso
 
 Para utilizar las utilidades de cifrado:
 
@@ -52,14 +52,14 @@ Para utilizar las utilidades de cifrado:
         }
     }
 
-## Características de seguridad
+## 🔒 Características de seguridad
 
 - Utiliza el algoritmo BCrypt, que incluye automáticamente un "salt" aleatorio para cada contraseña.
 - Protege contra ataques de fuerza bruta mediante un factor de trabajo configurable.
 - Las contraseñas cifradas no pueden ser descifradas, solo verificadas.
 - Cada vez que se cifra la misma contraseña, se genera un hash diferente debido al salt aleatorio.
 
-## Proceso de verificación durante el login
+## 🔄 Proceso de verificación durante el login
 
 Cuando un usuario intenta iniciar sesión, el sistema sigue estos pasos para verificar la contraseña:
 
@@ -73,7 +73,7 @@ Este proceso es seguro porque:
 - No es necesario descifrar el hash para verificar la contraseña.
 - El algoritmo BCrypt está diseñado específicamente para esta verificación unidireccional.
 
-## Notas importantes
+## ⚠️ Notas importantes
 
 1. Las contraseñas nulas o vacías generarán una excepción `IllegalArgumentException` al intentar cifrarlas.
 2. El método `matches` devolverá `false` si alguno de los parámetros es nulo.
