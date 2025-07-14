@@ -42,6 +42,12 @@ Este proyecto es un sistema de registro de usuarios construido con Spring Boot. 
 3. La aplicación estará disponible en `http://localhost:8080` por defecto.
 
 
+### 🔗 Endpoints principales
+
+- `POST /api/users/register` - Registrar un nuevo usuario
+- `POST /api/auth/login` - Autenticar un usuario
+- `GET /api/users` - Listar todos los usuarios (requiere autenticación)
+
 ### 📝 Uso de la aplicación
 
 #### 👤 Registro de usuarios
@@ -118,12 +124,6 @@ curl -X POST http://localhost:8080/api/auth/login \
    ```
 5. Haga clic en "Send" para enviar la solicitud
 
-### 🔗 Endpoints principales
-
-- `POST /api/users/register` - Registrar un nuevo usuario
-- `POST /api/auth/login` - Autenticar un usuario
-- `GET /api/users` - Listar todos los usuarios (requiere autenticación)
-
 ### 💾 Configuración de la base de datos
 
 Este proyecto utiliza H2 como base de datos en memoria para desarrollo y pruebas. No es necesario levantar ningún contenedor externo ni configurar variables de entorno para la base de datos.
@@ -153,6 +153,9 @@ Ejecute las pruebas con:
 - `dto/` - Objetos de transferencia de datos
 - `exception/` - Excepciones personalizadas y manejadores
 - `config/` - Clases de configuración
+- `mapper/` - Mapeo entre entidades y DTOs
+- `security/` - Configuración y utilidades de seguridad
+- `utils/` - Utilidades generales
 
 ## 📝 Logging
 
