@@ -20,12 +20,12 @@ public interface ConfigurationRepository extends JpaRepository<Configuration, Lo
      * @param configurationType El tipo de configuración a buscar
      * @return Lista de configuraciones activas que coinciden con el tipo especificado
      */
-    List<Configuration> findByConfigurationTypeAndActiveTrue(ConfigurationType configurationType);
+    List<Configuration> findByConfigurationTypeAndIsActiveTrue(ConfigurationType configurationType);
 
     /**
      * Busca todas las configuraciones activas.
      * 
      * @return Lista de todas las configuraciones activas
      */
-    List<Configuration> findByActiveTrue();
+    List<Configuration> findByIsActiveTrue();
 }

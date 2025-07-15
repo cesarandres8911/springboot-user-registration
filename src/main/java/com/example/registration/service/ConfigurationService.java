@@ -38,7 +38,7 @@ public class ConfigurationService {
      * @return Lista de configuraciones activas
      */
     public List<Configuration> getAllActiveConfigurations() {
-        return configurationRepository.findByActiveTrue();
+        return configurationRepository.findByIsActiveTrue();
     }
 
     /**
@@ -47,7 +47,7 @@ public class ConfigurationService {
      * @return Lista de configuraciones de contraseña activas
      */
     public List<Configuration> getPasswordConfigurations() {
-        List<Configuration> allConfigs = configurationRepository.findByActiveTrue();
+        List<Configuration> allConfigs = configurationRepository.findByIsActiveTrue();
         return allConfigs.stream()
                 .filter(config -> {
                     String typeKey = config.getConfigurationType().getTypeKey();
@@ -70,7 +70,7 @@ public class ConfigurationService {
         }
 
         List<Configuration> configurations = configurationRepository
-                .findByConfigurationTypeAndActiveTrue(configurationType.get());
+                .findByConfigurationTypeAndIsActiveTrue(configurationType.get());
 
         return configurations.isEmpty() ? Optional.empty() : Optional.of(configurations.get(0));
     }
@@ -90,7 +90,7 @@ public class ConfigurationService {
 
         // Buscar configuraciones activas de este tipo
         List<Configuration> existingConfigs = configurationRepository
-                .findByConfigurationTypeAndActiveTrue(configurationType);
+                .findByConfigurationTypeAndIsActiveTrue(configurationType);
 
         // Si existe una configuración activa, actualizarla
         if (!existingConfigs.isEmpty()) {

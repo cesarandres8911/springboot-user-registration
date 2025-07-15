@@ -36,5 +36,5 @@ public interface ConfigurationTypeRepository extends JpaRepository<Configuration
      * @return Lista de todos los tipos de configuración activos
      */
     @SuppressWarnings("unused")
-    java.util.List<ConfigurationType> findByActiveTrue();
+    java.util.List<ConfigurationType> findByIsActiveTrue();
 }
