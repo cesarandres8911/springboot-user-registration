@@ -24,6 +24,14 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Índice para búsquedas por email
+-- Mejora el rendimiento de las consultas que buscan usuarios por su correo electrónico
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(user_email);
+
+-- Índice para búsquedas por token
+-- Mejora el rendimiento de las consultas que buscan usuarios por su token de acceso
+CREATE INDEX IF NOT EXISTS idx_users_token ON users(user_token);
+
 -- Tabla: phones
 -- Almacena los teléfonos asociados a cada usuario
 CREATE TABLE IF NOT EXISTS phones (
@@ -69,40 +77,4 @@ CREATE TABLE IF NOT EXISTS configuration (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla: role
--- Almacena los roles de usuario (ejemplo: administrador)
-CREATE TABLE IF NOT EXISTS role (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY, -- Identificador único
-    role_name VARCHAR(50) NOT NULL UNIQUE,     -- Nombre del rol
-    description VARCHAR(255),             -- Descripción del rol
-
-    -- Campos de auditoría
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla: permission
--- Almacena los permisos que pueden asignarse a los roles
-CREATE TABLE IF NOT EXISTS permission (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY, -- Identificador único
-    permission_name VARCHAR(100) NOT NULL UNIQUE,    -- Nombre del permiso
-    description VARCHAR(255),             -- Descripción del permiso
-
-    -- Campos de auditoría
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla: roles_permissions
--- Relaciona roles con permisos (muchos a muchos)
-CREATE TABLE IF NOT EXISTS roles_permissions (
-    role_id BIGINT NOT NULL,              -- Llave foránea a role
-    permission_id BIGINT NOT NULL,        -- Llave foránea a permission
-    PRIMARY KEY (role_id, permission_id),
-    FOREIGN KEY (role_id) REFERENCES role(id),
-    FOREIGN KEY (permission_id) REFERENCES permission(id)
 );

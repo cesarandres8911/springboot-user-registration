@@ -88,7 +88,7 @@ class MapperTest {
         // Verify that the Phones have the correct field values
         assertNotNull(phones);
         assertEquals(2, phones.size());
-        assertEquals("1234567", phones.getFirst().getPhoneNumber());
+        assertEquals("1234567", phones.get(0).getPhoneNumber());
         assertEquals("1", phones.get(0).getCityCode());
         assertEquals("57", phones.get(0).getCountryCode());
         assertEquals("7654321", phones.get(1).getPhoneNumber());

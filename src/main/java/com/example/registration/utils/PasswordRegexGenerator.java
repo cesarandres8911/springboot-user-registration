@@ -179,7 +179,7 @@ public class PasswordRegexGenerator {
                 String tooLongPassword = "a".repeat(maxLength + 1);
                 if (pattern.matcher(tooLongPassword).matches()) {
                     logger.warn("La expresión regular permite contraseñas demasiado largas");
-                    regex = "^(?=.*" + minLength + "," + maxLength + "})(?!.*" + (maxLength + 1) + ",})" +
+                    regex = "^(?=.{" + minLength + "," + maxLength + "})(?!.{" + (maxLength + 1) + ",})" +
                             regex.substring(regex.indexOf("}") + 1);
                     logger.info("Expresión regular ajustada: {}", regex);
                 }
@@ -211,7 +211,7 @@ public class PasswordRegexGenerator {
 
         try {
             return Integer.parseInt(value);
-        } catch (NumberFormatException _) {
+        } catch (NumberFormatException ignored) {
             logger.warn("Valor no numérico para {}: {}, usando valor por defecto: {}",
                     type, value, defaultValue);
             return defaultValue;

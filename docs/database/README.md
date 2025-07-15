@@ -69,7 +69,14 @@ La base de datos se inicializa automáticamente al arrancar la aplicación media
    - Establece el esquema activo con `SET SCHEMA PUBLIC;` para asegurar que los datos se insertan en el esquema correcto
    - Contiene las sentencias INSERT para cargar datos iniciales
    - Se ejecuta después de schema.sql
-   - Actualmente inserta configuraciones para validación de contraseñas
+   - Actualmente inserta configuraciones para validación de contraseñas con los siguientes parámetros:
+     - `password.min.length`: 8 caracteres
+     - `password.max.length`: 30 caracteres
+     - `password.min.uppercase`: 1 carácter mayúscula
+     - `password.min.lowercase`: 1 carácter minúscula
+     - `password.min.digits`: 1 dígito
+     - `password.min.special`: 1 carácter especial
+     - `password.allowed.special`: "-.#$%&" (caracteres especiales permitidos)
 
 La configuración para la carga de estos archivos se encuentra en `application.properties`:
 ```properties
@@ -124,25 +131,6 @@ Almacena valores de configuración asociados a tipos de configuración.
 - `config_value` (VARCHAR): Valor de configuración
 - Campos de auditoría: `is_active`, `created_at`, `updated_at`
 
-#### 👑 role
-Almacena los roles de usuario (ejemplo: administrador).
-- `id` (BIGINT): Identificador único autoincrementable
-- `role_name` (VARCHAR): Nombre del rol (único)
-- `description` (VARCHAR): Descripción del rol
-- Campos de auditoría: `is_active`, `created_at`, `updated_at`
-
-#### 🔑 permission
-Almacena los permisos que pueden asignarse a los roles.
-- `id` (BIGINT): Identificador único autoincrementable
-- `permission_name` (VARCHAR): Nombre del permiso (único)
-- `description` (VARCHAR): Descripción del permiso
-- Campos de auditoría: `is_active`, `created_at`, `updated_at`
-
-#### 🔄 roles_permissions
-Relaciona roles con permisos (muchos a muchos).
-- `role_id` (BIGINT): Llave foránea a la tabla role
-- `permission_id` (BIGINT): Llave foránea a la tabla permission
-- Llave primaria compuesta: (role_id, permission_id)
 
 ## 🏛️ Entidades JPA implementadas
 
@@ -163,7 +151,6 @@ Representa un tipo de configuración en el sistema y mapea a la tabla `configura
 Representa una configuración en el sistema y mapea a la tabla `configuration`.
 - Relación Many-to-One con ConfigurationType: Múltiples configuraciones pueden pertenecer a un tipo de configuración.
 
-Las demás tablas (role, permission, roles_permissions) están definidas en el esquema de la base de datos pero aún no tienen entidades JPA correspondientes, ya que serán implementadas en futuras versiones del sistema.
 
 ---
 > H2 es solo para desarrollo y pruebas, incluso en su configuración basada en archivos. Para producción, utilice una base de datos real como PostgreSQL, MySQL u Oracle, y gestione las credenciales mediante servicios seguros de gestión de secretos.
