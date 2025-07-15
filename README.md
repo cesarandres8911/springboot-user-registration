@@ -4,12 +4,40 @@
 
 Este proyecto es un sistema de registro de usuarios construido con Spring Boot. Proporciona APIs RESTful para el registro, autenticación y gestión de usuarios.
 
+## 📂 Estructura del proyecto
+
+- `controller/` - Controladores REST
+- `service/` - Lógica de negocio
+- `repository/` - Acceso a datos
+- `model/` - Entidades JPA
+- `dto/` - Objetos de transferencia de datos
+- `exception/` - Excepciones personalizadas y manejadores
+- `config/` - Clases de configuración
+- `mapper/` - Mapeo entre entidades y DTOs
+- `security/` - Configuración y utilidades de seguridad
+- `utils/` - Utilidades generales
+
+
+## 📊 Diagrama de la solución
+
+El siguiente diagrama muestra la arquitectura de la aplicación, incluyendo los componentes principales y sus interacciones:
+
+![Diagrama de la arquitectura de la aplicación](src/main/resources/architecture_diagram.png)
+
+Este diagrama muestra:
+
+1. **Capa de Presentación**: Los controladores REST que reciben las peticiones HTTP y las dirigen a los servicios correspondientes.
+2. **Capa de Seguridad**: El filtro de autenticación JWT que valida los tokens en las peticiones.
+3. **Capa de Servicio**: Los servicios que implementan la lógica de negocio.
+4. **Capa de Persistencia**: Los repositorios que interactúan con la base de datos.
+
 ## ✨ Funcionalidades
 - Registro de usuarios con validación
 - Autenticación de usuarios (login)
 - Almacenamiento seguro de contraseñas
 - Endpoints para gestión de usuarios
 - Manejo de excepciones
+- Configuración de expresiones regulares para validación de contraseñas
 
 ## 🛠️ Tecnologías utilizadas
 - Java
@@ -41,6 +69,12 @@ Este proyecto es un sistema de registro de usuarios construido con Spring Boot. 
    ```
 3. La aplicación estará disponible en `http://localhost:8080` por defecto.
 
+### 🧪 Pruebas - Testing
+
+Ejecute las pruebas con:
+```bash
+./gradlew test
+```
 
 ### 🔗 Endpoints principales
 
@@ -54,116 +88,13 @@ Este proyecto es un sistema de registro de usuarios construido con Spring Boot. 
 
 ### 📝 Uso de la aplicación
 
-#### 🔄 Consumo de endpoints con cURL
-
-A continuación se muestra cómo consumir los diferentes endpoints de la API utilizando cURL desde la consola:
-
-##### 👤 Registro de usuarios
-
-> **Requisitos de contraseña**: La contraseña debe cumplir con los siguientes criterios:
-> - Longitud mínima: 8 caracteres
-> - Longitud máxima: 30 caracteres
-> - Al menos 1 letra mayúscula
-> - Al menos 1 letra minúscula
-> - Al menos 1 dígito
-> - Al menos 1 carácter especial
-> - Caracteres especiales permitidos: -.#$%&
-
-```bash
-curl -X POST http://localhost:8080/api/users/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Juan Rodriguez",
-    "email": "juan@rodriguez.cl",
-    "password": "Prueba.123$#-",
-    "phones": [
-      {
-        "number": "1234567",
-        "citycode": "1",
-        "contrycode": "57"
-      }
-    ]
-  }'
-```
-
-##### 🔐 Autenticación de usuarios
-
-```bash
-curl -X POST http://localhost:8080/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "juan@rodriguez.cl",
-    "password": "Prueba.123$#-"
-  }'
-```
-
-> **Nota importante**: La respuesta de los endpoints de registro y autenticación incluye un token JWT en el campo `token`. Este token debe ser utilizado para acceder a los endpoints protegidos incluyéndolo en el encabezado `Authorization` con el formato `Bearer {token}`.
-
-##### ⚙️ Sistema de configuración
-
-El sistema permite personalizar los requisitos de contraseña a través de la API de configuraciones. Esto es especialmente útil para ajustar las políticas de seguridad según las necesidades específicas de su organización.
-
-> **Configuraciones disponibles para contraseñas**:
-> - `password.min.length`: Longitud mínima de caracteres (valor predeterminado: 8)
-> - `password.max.length`: Longitud máxima de caracteres (valor predeterminado: 30)
-> - `password.min.uppercase`: Cantidad mínima de letras mayúsculas (valor predeterminado: 1)
-> - `password.min.lowercase`: Cantidad mínima de letras minúsculas (valor predeterminado: 1)
-> - `password.min.digits`: Cantidad mínima de dígitos (valor predeterminado: 1)
-> - `password.min.special`: Cantidad mínima de caracteres especiales (valor predeterminado: 1)
-> - `password.allowed.special`: Caracteres especiales permitidos (valor predeterminado: "-.#$%&")
-
-##### ⚙️ Obtener todas las configuraciones
-
-```bash
-curl -X GET http://localhost:8080/api/configurations \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
-
-##### ⚙️ Obtener una configuración específica
-
-```bash
-curl -X GET http://localhost:8080/api/configurations/password.min.length \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
-
-##### ⚙️ Actualizar una configuración
-
-```bash
-curl -X PUT http://localhost:8080/api/configurations/password.min.length?value=10 \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
-
-##### ⚙️ Actualizar una configuración usando JSON
-
-```bash
-curl -X PUT http://localhost:8080/api/configurations \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{
-    "configurationTypeId": 1,
-    "configValue": "10"
-  }'
-```
-
-> **Nota**: Al modificar las configuraciones de contraseña, los nuevos valores se aplicarán inmediatamente a todos los nuevos registros de usuarios. Esto permite ajustar dinámicamente las políticas de seguridad sin necesidad de reiniciar la aplicación.
-
 #### 🔄 Consumo de endpoints con Postman
 
 A continuación se muestra cómo consumir todos los endpoints de la API utilizando Postman:
 
 ##### 👤 Registro de usuarios
 
-> **Requisitos de contraseña**: La contraseña debe cumplir con los siguientes criterios:
-> - Longitud mínima: 8 caracteres
-> - Longitud máxima: 30 caracteres
-> - Al menos 1 letra mayúscula
-> - Al menos 1 letra minúscula
-> - Al menos 1 dígito
-> - Al menos 1 carácter especial
-> - Caracteres especiales permitidos: -.#$%&
+> **Nota sobre validación de contraseñas**: Actualmente, el sistema está configurado para validar contraseñas con los siguientes criterios: mínimo 8 caracteres, máximo 30 caracteres, al menos 1 letra mayúscula, 1 letra minúscula, 1 dígito y 1 carácter especial (entre -.#$%&). Estos parámetros pueden ser configurados a través de la API.
 
 1. Abra Postman
 2. Cree una nueva solicitud POST a `http://localhost:8080/api/users/register`
@@ -250,38 +181,6 @@ El sistema permite personalizar los requisitos de contraseña a través de la AP
 
 > **Nota**: Al modificar las configuraciones de contraseña, los nuevos valores se aplicarán inmediatamente a todos los nuevos registros de usuarios. Esto permite ajustar dinámicamente las políticas de seguridad sin necesidad de reiniciar la aplicación.
 
-### 💾 Configuración de la base de datos
-
-Este proyecto utiliza H2 como base de datos en memoria para desarrollo y pruebas. No es necesario levantar ningún contenedor externo ni configurar variables de entorno para la base de datos.
-
-La configuración de H2 se encuentra en el archivo `src/main/resources/application.properties`.
-
-Para acceder a la consola web de H2, una vez levantada la aplicación, acceda a:
-
-    http://localhost:8080/h2-console
-
-Las credenciales y URL de conexión están documentadas en el archivo de propiedades.
-
-
-### 🧪 Pruebas
-
-Ejecute las pruebas con:
-```bash
-./gradlew test
-```
-
-## 📂 Estructura del proyecto
-
-- `controller/` - Controladores REST
-- `service/` - Lógica de negocio
-- `repository/` - Acceso a datos
-- `model/` - Entidades JPA
-- `dto/` - Objetos de transferencia de datos
-- `exception/` - Excepciones personalizadas y manejadores
-- `config/` - Clases de configuración
-- `mapper/` - Mapeo entre entidades y DTOs
-- `security/` - Configuración y utilidades de seguridad
-- `utils/` - Utilidades generales
 
 ## 📝 Logging
 
@@ -306,21 +205,6 @@ public class YourClass {
 ## 📄 Licencia
 
 Este proyecto está licenciado bajo MIT License.
-
-## 🏗️ Modelo de arquitectura
-
-El siguiente diagrama representa la estructura y flujo de los principales componentes del proyecto:
-
-```
-[controller] --> [service] --> [repository] --> [model]
-                     |
-                   [util]
-                     |
-                [exception]
-```
-
-Esto ilustra el flujo típico de una petición y cómo se separan las responsabilidades en la base de código.
-
 
 ---
 
