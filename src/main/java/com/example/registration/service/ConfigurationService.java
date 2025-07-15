@@ -22,7 +22,7 @@ import java.util.Optional;
 public class ConfigurationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationService.class);
-    
+
     private final ConfigurationRepository configurationRepository;
     private final ConfigurationTypeRepository configurationTypeRepository;
 
@@ -38,7 +38,7 @@ public class ConfigurationService {
      * @return Lista de configuraciones activas
      */
     public List<Configuration> getAllActiveConfigurations() {
-        return configurationRepository.findByIsActiveTrue();
+        return configurationRepository.findByActiveTrue();
     }
 
     /**
@@ -47,7 +47,7 @@ public class ConfigurationService {
      * @return Lista de configuraciones de contraseña activas
      */
     public List<Configuration> getPasswordConfigurations() {
-        List<Configuration> allConfigs = configurationRepository.findByIsActiveTrue();
+        List<Configuration> allConfigs = configurationRepository.findByActiveTrue();
         return allConfigs.stream()
                 .filter(config -> {
                     String typeKey = config.getConfigurationType().getTypeKey();
@@ -70,8 +70,8 @@ public class ConfigurationService {
         }
 
         List<Configuration> configurations = configurationRepository
-                .findByConfigurationTypeAndIsActiveTrue(configurationType.get());
-        
+                .findByConfigurationTypeAndActiveTrue(configurationType.get());
+
         return configurations.isEmpty() ? Optional.empty() : Optional.of(configurations.get(0));
     }
 
@@ -90,7 +90,7 @@ public class ConfigurationService {
 
         // Buscar configuraciones activas de este tipo
         List<Configuration> existingConfigs = configurationRepository
-                .findByConfigurationTypeAndIsActiveTrue(configurationType);
+                .findByConfigurationTypeAndActiveTrue(configurationType);
 
         // Si existe una configuración activa, actualizarla
         if (!existingConfigs.isEmpty()) {
@@ -119,7 +119,7 @@ public class ConfigurationService {
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
-        
+
         return configurationTypeRepository.save(configurationType);
     }
 
@@ -139,7 +139,7 @@ public class ConfigurationService {
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
-        
+
         return configurationRepository.save(configuration);
     }
 }
