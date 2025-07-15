@@ -289,4 +289,28 @@ class ConfigurationControllerTest {
         verify(passwordValidationService).initializeValidator();
         verify(configurationMapper).configurationToConfigurationResponseDTO(configuration1);
     }
+
+    @Test
+    void updateConfigurationByTypeWithBody_withSpecialCharacters_shouldUpdateConfiguration() throws Exception {
+        // Arrange
+        String typeKey = "password.allowed.special";
+        String specialCharsValue = "-.#$%&*@!+";
+
+        when(configurationService.updateConfiguration(typeKey, specialCharsValue)).thenReturn(configuration1);
+        when(configurationMapper.configurationToConfigurationResponseDTO(configuration1)).thenReturn(configResponseDTO1);
+
+        // Act & Assert
+        mockMvc.perform(put("/api/configurations/{typeKey}/value", typeKey)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"value\":\"" + specialCharsValue + "\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.configValue", is("8")))
+                .andExpect(jsonPath("$.configurationType.typeKey", is("password.min.length")));
+
+        // Verify interactions
+        verify(configurationService).updateConfiguration(typeKey, specialCharsValue);
+        verify(passwordValidationService).initializeValidator();
+        verify(configurationMapper).configurationToConfigurationResponseDTO(configuration1);
+    }
 }

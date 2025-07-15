@@ -164,9 +164,51 @@ public class ConfigurationController {
     })
     public ResponseEntity<ConfigurationResponseDTO> updateConfigurationByType(
             @PathVariable String typeKey,
-            @RequestParam String value) {
+            @RequestParam(value = "value") String value) {
 
         logger.info("Actualizando configuración de tipo {} con valor {}", typeKey, value);
+
+        // Actualizar la configuración
+        Configuration updatedConfig = configurationService.updateConfiguration(typeKey, value);
+
+        // Reinicializar el validador de contraseñas para aplicar los cambios
+        passwordValidationService.initializeValidator();
+
+        // Convertir entidad a DTO de respuesta
+        ConfigurationResponseDTO responseDTO = configurationMapper
+                .configurationToConfigurationResponseDTO(updatedConfig);
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    /**
+     * Endpoint alternativo para actualizar una configuración por su tipo.
+     * Acepta el valor como parte del cuerpo de la solicitud en lugar de como parámetro de consulta,
+     * lo que facilita el envío de caracteres especiales sin problemas de codificación URL.
+     *
+     * @param typeKey Clave del tipo de configuración
+     * @param requestBody Mapa que contiene el valor de la configuración
+     * @return ResponseEntity con la configuración actualizada
+     */
+    @PutMapping("/{typeKey}/value")
+    @Operation(summary = "Actualizar configuración por tipo (alternativo)",
+            description = "Actualiza una configuración existente por su tipo usando el cuerpo de la solicitud para el valor")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Configuración actualizada exitosamente",
+                    content = @Content(schema = @Schema(implementation = ConfigurationResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Datos de configuración inválidos",
+                    content = @Content(schema = @Schema(implementation = Map.class)))
+    })
+    public ResponseEntity<ConfigurationResponseDTO> updateConfigurationByTypeWithBody(
+            @PathVariable String typeKey,
+            @RequestBody Map<String, String> requestBody) {
+
+        String value = requestBody.get("value");
+        if (value == null) {
+            throw new IllegalArgumentException("El parámetro 'value' es requerido en el cuerpo de la solicitud");
+        }
+
+        logger.info("Actualizando configuración de tipo {} con valor {} (usando cuerpo de solicitud)", typeKey, value);
 
         // Actualizar la configuración
         Configuration updatedConfig = configurationService.updateConfiguration(typeKey, value);
