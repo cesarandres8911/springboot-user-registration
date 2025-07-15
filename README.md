@@ -69,6 +69,12 @@ Este diagrama muestra:
    ```
 3. La aplicación estará disponible en `http://localhost:8080` por defecto.
 
+### 🧪 Pruebas - Testing
+
+Ejecute las pruebas con:
+```bash
+./gradlew test
+```
 
 ### 🔗 Endpoints principales
 
@@ -175,27 +181,6 @@ El sistema permite personalizar los requisitos de contraseña a través de la AP
 
 > **Nota**: Al modificar las configuraciones de contraseña, los nuevos valores se aplicarán inmediatamente a todos los nuevos registros de usuarios. Esto permite ajustar dinámicamente las políticas de seguridad sin necesidad de reiniciar la aplicación.
 
-
-
-### 🧪 Pruebas
-
-Ejecute las pruebas con:
-```bash
-./gradlew test
-```
-
-## 📂 Estructura del proyecto
-
-- `controller/` - Controladores REST
-- `service/` - Lógica de negocio
-- `repository/` - Acceso a datos
-- `model/` - Entidades JPA
-- `dto/` - Objetos de transferencia de datos
-- `exception/` - Excepciones personalizadas y manejadores
-- `config/` - Clases de configuración
-- `mapper/` - Mapeo entre entidades y DTOs
-- `security/` - Configuración y utilidades de seguridad
-- `utils/` - Utilidades generales
 
 ## 📝 Logging
 
