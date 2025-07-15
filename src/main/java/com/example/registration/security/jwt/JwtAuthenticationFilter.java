@@ -140,6 +140,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } else {
                 logAuthenticationStatus(userEmail);
             }
+        } catch (SignatureException e) {
+            // Propagar la excepción de firma para que sea manejada en doFilterInternal
+            loggerJwt.error("Error de firma JWT: {}", e.getMessage());
+            loggerJwt.debug(ERROR_DETAILS_MESSAGE, e);
+            throw new SignatureException("Error de firma JWT");
         } catch (Exception e) {
             loggerJwt.error("Error durante la autenticación: {}", e.getMessage());
             loggerJwt.debug(ERROR_DETAILS_MESSAGE, e);
