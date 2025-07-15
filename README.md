@@ -85,6 +85,7 @@ Ejecute las pruebas con:
 - `GET /api/configurations/{typeKey}` - Obtener una configuración específica por su tipo (requiere autenticación)
 - `PUT /api/configurations` - Actualizar una configuración existente o crear una nueva (requiere autenticación)
 - `PUT /api/configurations/{typeKey}?value=nuevoValor` - Actualizar una configuración por su tipo (requiere autenticación)
+- `PUT /api/configurations/{typeKey}/value` - Actualizar una configuración por su tipo usando el cuerpo de la solicitud (requiere autenticación)
 
 ### 📝 Uso de la aplicación
 
@@ -181,6 +182,24 @@ El sistema permite personalizar los requisitos de contraseña a través de la AP
 
 > **Nota**: Al modificar las configuraciones de contraseña, los nuevos valores se aplicarán inmediatamente a todos los nuevos registros de usuarios. Esto permite ajustar dinámicamente las políticas de seguridad sin necesidad de reiniciar la aplicación.
 
+##### ⚙️ Actualizar una configuración con caracteres especiales
+
+Para actualizar configuraciones que requieren caracteres especiales (como `password.allowed.special`), se recomienda utilizar el endpoint alternativo que acepta el valor en el cuerpo de la solicitud:
+
+1. Abra Postman
+2. Cree una nueva solicitud PUT a `http://localhost:8080/api/configurations/password.allowed.special/value`
+3. En la pestaña "Headers", agregue `Content-Type: application/json`
+4. En la pestaña "Headers", agregue `Authorization: Bearer YOUR_JWT_TOKEN` (reemplace YOUR_JWT_TOKEN con el token obtenido al autenticarse)
+5. En la pestaña "Body", seleccione "raw" y "JSON", y agregue el siguiente contenido:
+   ```json
+   {
+     "value": "-.#$%&*@!+"
+   }
+   ```
+6. Haga clic en "Send" para enviar la solicitud
+
+> **Nota sobre caracteres especiales**: Cuando se utilizan caracteres especiales en URLs (como en el endpoint `?value=-.#$%&`), estos deben ser codificados correctamente. Por ejemplo, el carácter `#` debe codificarse como `%23`, `$` como `%24`, etc. Para evitar problemas de codificación, se recomienda utilizar el endpoint alternativo que acepta el valor en el cuerpo de la solicitud.
+
 
 ## 📝 Logging
 
@@ -240,6 +259,7 @@ A continuación se presentan los enlaces a la documentación disponible en el pr
 ---
 
 ### 🔄 Cambios recientes
+- 🔧 Se agregó un nuevo endpoint alternativo para actualizar configuraciones con caracteres especiales, permitiendo el envío de valores a través del cuerpo de la solicitud en lugar de parámetros URL.
 - 🔐 Se agregó documentación sobre las limitaciones actuales y mejoras futuras en seguridad, especificando que la generación de refresh tokens no está dentro del alcance actual del proyecto pero debería implementarse en el futuro.
 - 🔧 Se implementó un controlador para la gestión de configuraciones del sistema, permitiendo editar los valores de validación de contraseñas.
 - 🔄 Se crearon mappers para las entidades Configuration y ConfigurationType utilizando MapStruct.
