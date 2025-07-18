@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    container_name: springboot-user-registration
+    ports:
+      - "8080:8080"
+    volumes:
+      - app-data:/app/data
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=FALSE
+      - SPRING_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS=true
+    restart: unless-stopped
+
+volumes:
+  app-data:
+    driver: local
