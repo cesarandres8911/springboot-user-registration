@@ -24,8 +24,8 @@ public interface ConfigurationMapper {
 
 
     /**
-     * Método auxiliar para crear un objeto ConfigurationType a partir de su ID.
-     * Este método es utilizado por MapStruct para mapear el campo configurationTypeId a configurationType.
+     * Crear un objeto ConfigurationType a partir de su ID.
+     * Mapear el campo configurationTypeId a configurationType.
      *
      * @param id id del tipo de configuración
      * @return Objeto ConfigurationType con el ID especificado
