@@ -55,8 +55,11 @@ Este diagrama muestra:
 ### 📋 Prerrequisitos
 - Java 17 o superior
 - Gradle
+- Docker y Docker Compose (opcional, para ejecución con contenedores)
 
 ### ▶️ Ejecución de la aplicación
+
+#### Método 1: Ejecución local
 
 1. Clone el repositorio:
    ```bash
@@ -69,6 +72,37 @@ Este diagrama muestra:
    ```
 3. La aplicación estará disponible en `http://localhost:8080` por defecto.
 
+#### Método 2: Ejecución con Docker Compose
+
+1. Asegúrese de tener Docker y Docker Compose instalados en su sistema.
+2. Clone el repositorio:
+   ```bash
+   git clone <repository-url>
+   cd springboot-user-registration
+   ```
+3. Construya y ejecute la aplicación:
+   ```bash
+   docker-compose up -d
+   ```
+4. La aplicación estará disponible en `http://localhost:8080`.
+5. Para ver los logs de la aplicación en tiempo real:
+   ```bash
+   docker-compose logs -f
+   ```
+6. Para detener la aplicación:
+   ```bash
+   docker-compose down
+   ```
+
+> **Nota**: Al utilizar Docker Compose, la base de datos H2 se persistirá en un volumen Docker, lo que permite mantener los datos entre reinicios del contenedor.
+
+### 📊 Acceso a la consola H2
+La consola H2 está habilitada y puede acceder a ella a través de:
+- URL: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:file:/app/data/testdb`
+- Usuario: `sa`
+- Contraseña: (dejar en blanco)
+
 ### 🧪 Pruebas - Testing
 
 Ejecute las pruebas con:
@@ -76,7 +110,7 @@ Ejecute las pruebas con:
 ./gradlew test
 ```
 
-### 🔗 Endpoints principales
+## 🔗 Endpoints principales
 
 - `POST /api/users/register` - Registrar un nuevo usuario
 - `POST /api/auth/login` - Autenticar un usuario
@@ -87,13 +121,13 @@ Ejecute las pruebas con:
 - `PUT /api/configurations/{typeKey}?value=nuevoValor` - Actualizar una configuración por su tipo (requiere autenticación)
 - `PUT /api/configurations/{typeKey}/value` - Actualizar una configuración por su tipo usando el cuerpo de la solicitud (requiere autenticación)
 
-### 📝 Uso de la aplicación
+## 📝 Uso de la aplicación
 
-#### 🔄 Consumo de endpoints con Postman
+### 🔄 Consumo de endpoints con Postman
 
 A continuación se muestra cómo consumir todos los endpoints de la API utilizando Postman:
 
-##### 👤 Registro de usuarios
+#### 👤 Registro de usuarios
 
 > **Nota sobre validación de contraseñas**: Actualmente, el sistema está configurado para validar contraseñas con los siguientes criterios: mínimo 8 caracteres, máximo 30 caracteres, al menos 1 letra mayúscula, 1 letra minúscula, 1 dígito y 1 carácter especial (entre -.#$%&). Estos parámetros pueden ser configurados a través de la API.
 
@@ -117,7 +151,7 @@ A continuación se muestra cómo consumir todos los endpoints de la API utilizan
    ```
 5. Haga clic en "Send" para enviar la solicitud
 
-##### 🔐 Autenticación de usuarios
+#### 🔐 Autenticación de usuarios
 
 1. Abra Postman
 2. Cree una nueva solicitud POST a `http://localhost:8080/api/auth/login`
@@ -130,8 +164,11 @@ A continuación se muestra cómo consumir todos los endpoints de la API utilizan
    }
    ```
 5. Haga clic en "Send" para enviar la solicitud
+6. Este endpoint te devolverá un token JWT que deberás usar para los endpoints protegidos.
+7. Para acceder a endpoints protegidos, debes agregar el header `Authorization` con el valor `Bearer tu_token_jwt`.
+   - Ejemplo: `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
 
-##### ⚙️ Sistema de configuración
+#### ⚙️ Sistema de configuración
 
 El sistema permite personalizar los requisitos de contraseña a través de la API de configuraciones. Esto es especialmente útil para ajustar las políticas de seguridad según las necesidades específicas de su organización.
 
@@ -220,13 +257,6 @@ public class YourClass {
 }
 ```
 
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo MIT License.
-
----
-
 ## 📚 Documentación
 
 A continuación se presentan los enlaces a la documentación disponible en el proyecto:
@@ -256,9 +286,9 @@ A continuación se presentan los enlaces a la documentación disponible en el pr
 ### 📝 Ejercicio propuesto
 - 📋 **Descripción del ejercicio:** [`docs/exercise/integration_proposed_exercise.md`](docs/exercise/integration_proposed_exercise.md)
 
----
-
-### 🔄 Cambios recientes
+## 🔄 Cambios recientes
+- 🐳 Se agregó soporte para Docker y Docker Compose, permitiendo ejecutar la aplicación en contenedores.
+- 📝 Se actualizó la documentación con instrucciones para ejecutar la aplicación usando Docker Compose.
 - 🔧 Se agregó un nuevo endpoint alternativo para actualizar configuraciones con caracteres especiales, permitiendo el envío de valores a través del cuerpo de la solicitud en lugar de parámetros URL.
 - 🔐 Se agregó documentación sobre las limitaciones actuales y mejoras futuras en seguridad, especificando que la generación de refresh tokens no está dentro del alcance actual del proyecto pero debería implementarse en el futuro.
 - 🔧 Se implementó un controlador para la gestión de configuraciones del sistema, permitiendo editar los valores de validación de contraseñas.
@@ -269,3 +299,8 @@ A continuación se presentan los enlaces a la documentación disponible en el pr
 - 🔄 Se actualizó la documentación para reflejar el uso de H2 como base de datos en memoria, eliminando referencias a PostgreSQL, Docker y .env para la base de datos.
 - 📋 Se actualizó la documentación de la base de datos para incluir información detallada sobre el esquema de la base de datos y las entidades JPA implementadas.
 - 🔄 Se agregó documentación sobre el uso de MapStruct como biblioteca para el mapeo entre entidades y DTOs.
+- 📝 Se consolidó la documentación de Docker para evitar duplicidades y mejorar la claridad.
+
+## 📄 Licencia
+
+Este proyecto está licenciado bajo MIT License.
